@@ -28,6 +28,11 @@
   - dimension: annual_inc
     type: number
     sql: ${TABLE}.annual_inc
+    
+  - dimension: annual_inc_tier
+    type: tier
+    tiers: [10000,40000,60000,80000]
+    sql: ${annual_inc}
 
   - dimension: avg_cur_bal
     sql: ${TABLE}.avg_cur_bal
@@ -116,16 +121,26 @@
     sql: ${TABLE}.installment
 
   - dimension: int_rate
-    sql: ${TABLE}.int_rate
+    type: number
+    format: "%0.2f%"
+    sql: trim(trailing '%' from trim(${TABLE}.int_rate))::float
 
   - dimension: is_inc_v
     sql: ${TABLE}.is_inc_v
 
-  - dimension_group: issue_d
+  - dimension_group: issue
     type: time
-    timeframes: [date, week, month]
+    timeframes: [date, week, month,month_num, year]
     convert_tz: false
     sql: ${TABLE}.issue_d
+    
+  - dimension: issue_quarter
+    type: int
+    sql: CEIL(${issue_month_num} / 3.0)
+
+  - dimension: fiscal_yyyyq
+    sql: |
+      ${issue_year} ||  '-Q' || ${issue_quarter}    
 
   - dimension_group: last_credit_pull_d
     type: time
@@ -345,6 +360,7 @@
 
   - dimension: total_rec_int
     type: number
+    format: "$%d"
     sql: ${TABLE}.total_rec_int
 
   - dimension: total_rec_late_fee
@@ -360,8 +376,53 @@
 
   - dimension: url
     sql: ${TABLE}.url
+    
+  - dimension: return_num
+    type: number
+    hidden: true
+    sql: 0.99 * (${total_rec_int} + ${total_rec_late_fee}) - ${out_prncp_inv} + (${recoveries} - ${collection_recovery_fee})
+  
+  - dimension: sum_of_returns
+    hidden: true
+    type: sum
+    sql: ${return_num}
+  
+  - measure: total_outstanding_principal_inv
+    type: sum
+    sql: ${out_prncp_inv}
+  
+  - measure: nar
+    type: number
+    format: "%0.2f%"
+    sql: (POWER(1 + ${sum_of_returns} / NULLIF(${total_outstanding_principal_inv},0),12.0) - 1) * 100.0
+    
 
   - measure: count
     type: count
     drill_fields: [id]
+    
+  - measure: percent_of_total
+    type: percent_of_total
+    sql: ${count}
+    
+  - measure: verified_loans
+    type: count
+    filters:
+      is_inc_v: "Verified"
+    
+  - measure: percent_verified
+    type: number
+    format: "%0.2f%"
+    sql: 100.0 * ${verified_loans} / NULLIF(${count},null)
+    
+  - measure: total_amount
+    type: sum
+    sql: ${loan_amnt}
+    format: "$%d"
+    
+  - measure: average_int_rate
+    type: average
+    format: "%0.2f%"
+    sql: ${int_rate}
+    
 
