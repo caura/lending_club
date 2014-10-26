@@ -17,5 +17,5 @@
     - member_id
     - id
     
-- explore: applications
+- explore: listings
 
