@@ -1,4 +1,5 @@
-- view: loan_stats
+- view: loans
+  sql_table_name: loan_stats
   fields:
 
   - dimension: id
@@ -41,7 +42,19 @@
     sql: ${TABLE}.bc_open_to_buy
 
   - dimension: bc_util
-    sql: ${TABLE}.bc_util
+    type: number
+    format: "%0.2f%"
+    sql: trim(trailing '%' from trim(${TABLE}.bc_util))::float
+    
+  - dimension: bc_util_tier
+    type: tier
+    tiers: [20,40,60,80]
+    sql: ${bc_util}
+    
+  - measure: bc_util_average
+    type: average
+    format: "%0.2f%"
+    sql: ${bc_util}
 
   - dimension: chargeoff_within_12_mths
     type: int
@@ -89,11 +102,23 @@
 
   - dimension: fico_range_high
     type: int
+    hidden: true
     sql: ${TABLE}.fico_range_high
 
   - dimension: fico_range_low
     type: int
+    hidden: true
     sql: ${TABLE}.fico_range_low
+
+  - dimension: fico_high_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${fico_range_high}
+    
+  - dimension: fico_low_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${fico_range_low}
 
   - dimension: funded_amnt
     type: int
@@ -313,7 +338,19 @@
     sql: ${TABLE}.revol_bal
 
   - dimension: revol_util
-    sql: ${TABLE}.revol_util
+    type: number
+    format: "%0.2f%"
+    sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float
+    
+  - dimension: revol_util_tier
+    type: tier
+    tiers: [20,40,60,80]
+    sql: ${revol_util}
+    
+  - measure: revol_util_average
+    type: sum
+    format: "%0.2f%"
+    sql: ${revol_util}
 
   - dimension: sub_grade
     sql: ${TABLE}.sub_grade
@@ -344,11 +381,25 @@
   - dimension: total_bal_ex_mort
     sql: ${TABLE}.total_bal_ex_mort
 
-  - dimension: total_bc_limit
-    sql: ${TABLE}.total_bc_limit
+  - dimension: bc_limit
+    type: number
+    format: "$%d"
+    sql: ${TABLE}.total_bc_limit::int
+    
+  - measure: average_bc_limit
+    type: average
+    format: "$%d"
+    sql: ${bc_limit}
 
-  - dimension: total_il_high_credit_limit
-    sql: ${TABLE}.total_il_high_credit_limit
+  - dimension: il_high_credit_limit
+    type: number
+    format: "$%d"  
+    sql: ${TABLE}.total_il_high_credit_limit::int
+  
+  - measure: average_il_high_credit_limit
+    type: average
+    format: "$%d"
+    sql: ${il_high_credit_limit}
 
   - dimension: total_pymnt
     type: number
@@ -376,6 +427,8 @@
 
   - dimension: url
     sql: ${TABLE}.url
+    html: |
+      <a href="{{ value }}" target="_blank">LendingClub <img src="/images/qr-graph-line@2x.png" height=20 width=20</a>
     
   - dimension: return_num
     type: number
@@ -402,6 +455,7 @@
     drill_fields: [id]
     
   - measure: percent_of_total
+    decimals: 2
     type: percent_of_total
     sql: ${count}
     
@@ -425,4 +479,90 @@
     format: "%0.2f%"
     sql: ${int_rate}
     
+#     
+#     "id":111111,
+#     "memberId":222222,
+#     "loanAmount":1750.0,
+#     "fundedAmount":25.0,
+#     "term":36,
+#     "intRate":10.99,
+#     "expDefaultRate":3.5,
+#     "serviceFeeRate":0.85,
+#     "installment":57.29,
+#     "grade":"B",
+#     "subGrade":"B3",
+#     "empLength":0,
+#     "homeOwnership":"OWN",
+#     "annualInc":123432.0,
+#     "isIncV":"Requested",
+#     "acceptD":"2014-08-25T10:56:29.000-07:00",
+#     "expD":"2014-09-08T10:57:13.000-07:00",
+#     "listD":"2014-08-25T10:50:20.000-07:00",
+#     "creditPullD":"2014-08-25T10:56:18.000-07:00",
+#     "reviewStatusD":"2014-09-03T14:41:53.957-07:00",
+#     "reviewStatus":"NOT_APPROVED",
+#     "desc":"Loan description",
+#     "purpose":"debt_consolidation",
+#     "addrCity":"San Leandro",
+#     "addrState":"CA",
+#     "investorCount":"",
+#     "ilsExpD":"2014-08-25T11:00:00.000-07:00",
+#     "initialListStatus":"F",
+#     "empTitle":"",
+#     "accNowDelinq":"",
+#     "accOpenPast24Mths":23,
+#     "bcOpenToBuy":30000,
+#     "percentBcGt75":23.0,
+#     "bcUtil":23.0,
+#     "dti":0.0,
+#     "delinq2Yrs":1,
+#     "delinqAmnt":0.0,
+#     "earliestCrLine":"1984-09-15T00:00:00.000-07:00",
+#     "ficoRangeLow":750,
+#     "ficoRangeHigh":754,
+#     "inqLast6Mths":0,
+#     "mthsSinceLastDelinq":90,
+#     "mthsSinceLastRecord":0,
+#     "mthsSinceRecentInq":14,
+#     "mthsSinceRecentRevolDelinq":23,
+#     "mthsSinceRecentBc":23,
+#     "mortAcc":23,
+#     "openAcc":3,
+#     "pubRec":0,
+#     "totalBalExMort":13944,
+#     "revolBal":1.0,
+#     "revolUtil":0.0,
+#     "totalBcLimit":23,
+#     "totalAcc":4,
+#     "totalIlHighCreditLimit":12,
+#     "numRevAccts":28,
+#     "mthsSinceRecentBcDlq":52,
+#     "pubRecBankruptcies":0,
+#     "numAcctsEver120Ppd":12,
+#     "chargeoffWithin12Mths":0,
+#     "collections12MthsExMed":0,
+#     "taxLiens":0,
+#     "mthsSinceLastMajorDerog":12,
+#     "numSats":8,
+#     "numTlOpPast12m":0,
+#     "moSinRcntTl":12,
+#     "totHiCredLim":12,
+#     "totCurBal":12,
+#     "avgCurBal":12,
+#     "numBcTl":12,
+#     "numActvBcTl":12,
+#     "numBcSats":7,
+#     "pctTlNvrDlq":12,
+#     "numTl90gDpd24m":12,
+#     "numTl30dpd":12,
+#     "numTl120dpd2m":12,
+#     "numIlTl":12,
+#     "moSinOldIlAcct":12,
+#     "numActvRevTl":12,
+#     "moSinOldRevTlOp":12,
+#     "moSinRcntRevTlOp":11,
+#     "totalRevHiLim":12,
+#     "numRevTlBalGt0":12,
+#     "numOpRevTl":12,
+#     "totCollAmt":12    
 

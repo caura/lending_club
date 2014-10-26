@@ -1,4 +1,5 @@
-- view: loan_rejects
+- view: rejects
+  sql_table_name: loan_rejects
   fields:
 
   - dimension: amount_requested
