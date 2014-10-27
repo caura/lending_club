@@ -1,159 +1,61 @@
+# field descriptions:
+# https://docs.google.com/a/looker.com/spreadsheets/d/1QfoI8zjZSlh7A735zz6dxiQ7Gu4E5SuY1i6K66vDwXI/edit?usp=sharing
+
 - view: loans
   sql_table_name: loan_stats
   fields:
+
+###########################################################    
+### DIMENSIONS/FIELDS
+###########################################################
+###########################################################    
+### LOAN
+###########################################################  
 
   - dimension: id
     primary_key: true
     type: int
     sql: ${TABLE}.id
 
-  - dimension: acc_now_delinq
-    type: int
-    sql: ${TABLE}.acc_now_delinq
-
-  - dimension: acc_open_past_24mths
-    sql: ${TABLE}.acc_open_past_24mths
-
-  - dimension_group: accept_d
-    type: time
-    timeframes: [date, week, month]
-    convert_tz: false
-    sql: ${TABLE}.accept_d
-
-  - dimension: addr_city
-    sql: ${TABLE}.addr_city
-
-  - dimension: addr_state
-    sql: ${TABLE}.addr_state
-
-  - dimension: annual_inc
-    type: number
-    sql: ${TABLE}.annual_inc
-    
-  - dimension: annual_inc_tier
-    type: tier
-    tiers: [10000,40000,60000,80000]
-    sql: ${annual_inc}
-
-  - dimension: avg_cur_bal
-    sql: ${TABLE}.avg_cur_bal
-
-  - dimension: bc_open_to_buy
-    sql: ${TABLE}.bc_open_to_buy
-
-  - dimension: bc_util
-    type: number
-    format: "%0.2f%"
-    sql: trim(trailing '%' from trim(${TABLE}.bc_util))::float
-    
-  - dimension: bc_util_tier
-    type: tier
-    tiers: [20,40,60,80]
-    sql: ${bc_util}
-    
-  - measure: bc_util_average
-    type: average
-    format: "%0.2f%"
-    sql: ${bc_util}
-
-  - dimension: chargeoff_within_12_mths
-    type: int
-    sql: ${TABLE}.chargeoff_within_12_mths
-
-  - dimension: collection_recovery_fee
-    type: number
-    sql: ${TABLE}.collection_recovery_fee
-
-  - dimension: collections_12_mths_ex_med
-    type: int
-    sql: ${TABLE}.collections_12_mths_ex_med
-
-  - dimension: delinq_2yrs
-    type: int
-    sql: ${TABLE}.delinq_2yrs
-
-  - dimension: delinq_amnt
-    type: int
-    sql: ${TABLE}.delinq_amnt
-
-  - dimension: desc
+  - dimension: description
     sql: ${TABLE}.desc
 
-  - dimension: dti
-    type: number
-    sql: ${TABLE}.dti
-
-  - dimension_group: earliest_cr_line
-    type: time
-    timeframes: [time, date, week, month]
-    sql: ${TABLE}.earliest_cr_line
-
-  - dimension: emp_length
-    sql: ${TABLE}.emp_length
-
-  - dimension: emp_title
-    sql: ${TABLE}.emp_title
-
-  - dimension_group: exp_d
+  - dimension_group: expired
     type: time
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.exp_d
 
-  - dimension: fico_range_high
-    type: int
-    hidden: true
-    sql: ${TABLE}.fico_range_high
-
-  - dimension: fico_range_low
-    type: int
-    hidden: true
-    sql: ${TABLE}.fico_range_low
-
-  - dimension: fico_high_tier
-    type: tier
-    tiers: [450,550,650,750,850]
-    sql: ${fico_range_high}
-    
-  - dimension: fico_low_tier
-    type: tier
-    tiers: [450,550,650,750,850]
-    sql: ${fico_range_low}
-
-  - dimension: funded_amnt
+  - dimension: funded_amount
+    description: "The total amount committed to that loan at that point in time"
     type: int
     sql: ${TABLE}.funded_amnt
 
-  - dimension: funded_amnt_inv
+#How is this different from funded_amount?
+  - dimension: funded_amount_investors
+    description: "The total amount committed by investors for that loan at that point in time"
     type: number
     sql: ${TABLE}.funded_amnt_inv
 
   - dimension: grade
     sql: ${TABLE}.grade
 
-  - dimension: home_ownership
-    sql: ${TABLE}.home_ownership
-
   - dimension: initial_list_status
     sql: ${TABLE}.initial_list_status
 
-  - dimension: inq_last_6mths
-    type: int
-    sql: ${TABLE}.inq_last_6mths
-
   - dimension: installment
+    description: "The monthly payment owed by the borrower if the loan originates"
     type: number
     sql: ${TABLE}.installment
 
-  - dimension: int_rate
+  - dimension: interest_rate
+    description: "Interest Rate on the loan"
     type: number
     format: "%0.2f%"
     sql: trim(trailing '%' from trim(${TABLE}.int_rate))::float
 
-  - dimension: is_inc_v
-    sql: ${TABLE}.is_inc_v
-
   - dimension_group: issue
+    description: "The date which the loan was funded"
     type: time
     timeframes: [date, week, month,month_num, year]
     convert_tz: false
@@ -167,262 +69,122 @@
     sql: |
       ${issue_year} ||  '-Q' || ${issue_quarter}    
 
-  - dimension_group: last_credit_pull_d
-    type: time
-    timeframes: [date, week, month]
-    convert_tz: false
-    sql: ${TABLE}.last_credit_pull_d
-
-  - dimension: last_fico_range_high
-    type: int
-    sql: ${TABLE}.last_fico_range_high
-
-  - dimension: last_fico_range_low
-    type: int
-    sql: ${TABLE}.last_fico_range_low
-
-  - dimension: last_pymnt_amnt
+  - dimension: last_payment_amount
+    description: "Last total payment amount received"
     type: number
     sql: ${TABLE}.last_pymnt_amnt
 
-  - dimension_group: last_pymnt_d
+  - dimension_group: last_payment
     type: time
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.last_pymnt_d
 
-  - dimension_group: list_d
+  - dimension_group: listed
     type: time
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.list_d
 
-  - dimension: loan_amnt
+  - dimension: loan_amount
+    description: "The listed amount of the loan applied for by the borrower. If at some point in time, the credit department reduces the loan amount, then it will be reflected in this value"
     type: int
     sql: ${TABLE}.loan_amnt
 
   - dimension: loan_status
     sql: ${TABLE}.loan_status
 
-  - dimension: member_id
-    type: int
-    sql: ${TABLE}.member_id
-
-  - dimension: mo_sin_old_il_acct
-    sql: ${TABLE}.mo_sin_old_il_acct
-
-  - dimension: mo_sin_old_rev_tl_op
-    sql: ${TABLE}.mo_sin_old_rev_tl_op
-
-  - dimension: mo_sin_rcnt_rev_tl_op
-    sql: ${TABLE}.mo_sin_rcnt_rev_tl_op
-
-  - dimension: mo_sin_rcnt_tl
-    sql: ${TABLE}.mo_sin_rcnt_tl
-
-  - dimension: mort_acc
-    sql: ${TABLE}.mort_acc
-
-  - dimension: mths_since_last_delinq
-    sql: ${TABLE}.mths_since_last_delinq
-
-  - dimension: mths_since_last_major_derog
-    sql: ${TABLE}.mths_since_last_major_derog
-
-  - dimension: mths_since_last_record
-    sql: ${TABLE}.mths_since_last_record
-
-  - dimension: mths_since_recent_bc
-    sql: ${TABLE}.mths_since_recent_bc
-
-  - dimension: mths_since_recent_bc_dlq
-    sql: ${TABLE}.mths_since_recent_bc_dlq
-
-  - dimension: mths_since_recent_inq
-    sql: ${TABLE}.mths_since_recent_inq
-
-  - dimension: mths_since_recent_revol_delinq
-    sql: ${TABLE}.mths_since_recent_revol_delinq
-
-  - dimension_group: next_pymnt_d
+  - dimension_group: next_payment
+    description: "Next scheduled payment date"
     type: time
     timeframes: [date, week, month]
     convert_tz: false
     sql: ${TABLE}.next_pymnt_d
 
-  - dimension: num_accts_ever_120_pd
-    sql: ${TABLE}.num_accts_ever_120_pd
-
-  - dimension: num_actv_bc_tl
-    sql: ${TABLE}.num_actv_bc_tl
-
-  - dimension: num_actv_rev_tl
-    sql: ${TABLE}.num_actv_rev_tl
-
-  - dimension: num_bc_sats
-    sql: ${TABLE}.num_bc_sats
-
-  - dimension: num_bc_tl
-    sql: ${TABLE}.num_bc_tl
-
-  - dimension: num_il_tl
-    sql: ${TABLE}.num_il_tl
-
-  - dimension: num_op_rev_tl
-    sql: ${TABLE}.num_op_rev_tl
-
-  - dimension: num_rev_accts
-    sql: ${TABLE}.num_rev_accts
-
-  - dimension: num_rev_tl_bal_gt_0
-    sql: ${TABLE}.num_rev_tl_bal_gt_0
-
-  - dimension: num_sats
-    sql: ${TABLE}.num_sats
-
-  - dimension: num_tl_120dpd_2m
-    sql: ${TABLE}.num_tl_120dpd_2m
-
-  - dimension: num_tl_30dpd
-    sql: ${TABLE}.num_tl_30dpd
-
-  - dimension: num_tl_90g_dpd_24m
-    sql: ${TABLE}.num_tl_90g_dpd_24m
-
-  - dimension: num_tl_op_past_12m
-    sql: ${TABLE}.num_tl_op_past_12m
-
-  - dimension: open_acc
-    type: int
-    sql: ${TABLE}.open_acc
-
   - dimension: out_prncp
+    label: "Outstanding Principle"
+    description: "Remaining outstanding principal for total amount funded"
     type: number
     sql: ${TABLE}.out_prncp
 
   - dimension: out_prncp_inv
+    label: "Outstanding Principle (Inv)"
+    description: "Remaining outstanding principal for portion of total amount funded by investors"
     type: number
     sql: ${TABLE}.out_prncp_inv
+    
+  - dimension: principle_delta
+    description: "LC-funded Principle?"
+    type: number
+    sql: ${out_prncp} - ${out_prncp_inv}
 
   - dimension: pct_tl_nvr_dlq
+    label: "Percent Never Delinquent"
+    description: "Percent of trades never delinquent"
+    type: number
+    format: "%0.2f%"
     sql: ${TABLE}.pct_tl_nvr_dlq
-
-  - dimension: percent_bc_gt_75
-    sql: ${TABLE}.percent_bc_gt_75
 
   - dimension: policy_code
     type: int
     sql: ${TABLE}.policy_code
 
-  - dimension: pub_rec
-    type: int
-    sql: ${TABLE}.pub_rec
-
-  - dimension: pub_rec_bankruptcies
-    type: int
-    sql: ${TABLE}.pub_rec_bankruptcies
-
   - dimension: purpose
+    description: "A category provided by the borrower for the loan request"
     sql: ${TABLE}.purpose
 
-  - dimension: pymnt_plan
+  - dimension: payment_plan
     type: yesno
     sql: ${TABLE}.pymnt_plan
 
   - dimension: recoveries
+    description: "Post charge off gross recovery"
     type: number
     sql: ${TABLE}.recoveries
-
-  - dimension: revol_bal
-    type: int
-    sql: ${TABLE}.revol_bal
-
-  - dimension: revol_util
-    type: number
-    format: "%0.2f%"
-    sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float
     
-  - dimension: revol_util_tier
-    type: tier
-    tiers: [20,40,60,80]
-    sql: ${revol_util}
-    
-  - measure: revol_util_average
-    type: sum
-    format: "%0.2f%"
-    sql: ${revol_util}
-
   - dimension: sub_grade
     sql: ${TABLE}.sub_grade
 
-  - dimension: tax_liens
+  - dimension: borrower.tax_liens
+    description: "Number of tax liens"
     type: int
     sql: ${TABLE}.tax_liens
 
   - dimension: term
+    description: "The number of payments on the loan. Values are in months and can be either 36 or 60"
     sql: ${TABLE}.term
 
   - dimension: title
     sql: ${TABLE}.title
 
-  - dimension: tot_coll_amt
-    sql: ${TABLE}.tot_coll_amt
-
-  - dimension: tot_cur_bal
-    sql: ${TABLE}.tot_cur_bal
-
-  - dimension: tot_hi_cred_lim
-    sql: ${TABLE}.tot_hi_cred_lim
-
-  - dimension: total_acc
-    type: int
-    sql: ${TABLE}.total_acc
-
-  - dimension: total_bal_ex_mort
-    sql: ${TABLE}.total_bal_ex_mort
-
-  - dimension: bc_limit
-    type: number
-    format: "$%d"
-    sql: ${TABLE}.total_bc_limit::int
-    
-  - measure: average_bc_limit
-    type: average
-    format: "$%d"
-    sql: ${bc_limit}
-
-  - dimension: il_high_credit_limit
-    type: number
-    format: "$%d"  
-    sql: ${TABLE}.total_il_high_credit_limit::int
-  
-  - measure: average_il_high_credit_limit
-    type: average
-    format: "$%d"
-    sql: ${il_high_credit_limit}
-
   - dimension: total_pymnt
+    description: "Payments received to date for total amount funded"
     type: number
     sql: ${TABLE}.total_pymnt
 
-  - dimension: total_pymnt_inv
+  - dimension: total_payment_inv
+    description: "Payments received to date for portion of total amount funded by investors"
     type: number
     sql: ${TABLE}.total_pymnt_inv
 
   - dimension: total_rec_int
+    label: "Total Received Interest"
     type: number
     format: "$%d"
     sql: ${TABLE}.total_rec_int
 
   - dimension: total_rec_late_fee
+    label: "Total Received Late fees"
     type: number
     sql: ${TABLE}.total_rec_late_fee
 
   - dimension: total_rec_prncp
+    label: "Total Received Principle"
     type: number
     sql: ${TABLE}.total_rec_prncp
 
   - dimension: total_rev_hi_lim
+    description: "Total revolving high credit/credit limit"
     sql: ${TABLE}.total_rev_hi_lim
 
   - dimension: url
@@ -439,6 +201,323 @@
     hidden: true
     type: sum
     sql: ${return_num}
+    
+###########################################################    
+### BORROWER
+###########################################################      
+  - dimension: borrower.id
+    type: int
+    sql: ${TABLE}.member_id
+        
+  - dimension: borrower.dti
+    description: |
+      A ratio calculated using the borrower’s total monthly debt payments on the total debt obligations, 
+      excluding mortgage and the requested LC loan, divided by the borrower’s self-reported monthly income
+    type: number
+    sql: ${TABLE}.dti
+
+  - dimension_group: borrower.earliest_cr_line
+    description: "The date the borrower's earliest reported credit line was opened"
+    type: time
+    timeframes: [time, date, week, month]
+    sql: ${TABLE}.earliest_cr_line
+
+  - dimension: borrower.emp_length
+    description: "Employment length in years. Possible values are between 0 and 10 where 0 means less than one year and 10 means ten or more years"
+    sql: ${TABLE}.emp_length
+
+  - dimension: borrower.emp_title
+    sql: ${TABLE}.emp_title    
+
+  - dimension: borrower.fico_high_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${TABLE}.fico_range_high
+    
+  - dimension: borrower.fico_low_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${TABLE}.fico_range_low
+    
+  - dimension: borrower.accounts_delinquent
+    description: "The number of accounts on which the borrower is now delinquent"
+    type: int
+    sql: ${TABLE}.acc_now_delinq
+
+  - dimension: borrower.accounts_past_24months
+    description: "Number of trades opened in past 24 months"
+    sql: ${TABLE}.acc_open_past_24mths
+
+  - dimension_group: accepted
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.accept_d
+
+  - dimension: borrower.address_city
+    sql: ${TABLE}.addr_city
+
+  - dimension: borrower.address_state
+    sql: ${TABLE}.addr_state
+
+  - dimension: borrower.annual_income
+    type: number
+    sql: ${TABLE}.annual_inc
+    
+  - dimension: borrower.annual_inc_tier
+    type: tier
+    tiers: [10000,40000,60000,80000]
+    sql: ${borrower.annual_income}
+
+  - dimension: borrower.average_current_balance
+    sql: ${TABLE}.avg_cur_bal
+
+  - dimension: borrower.bc_open_to_buy
+    description: "Total open to buy on revolving bankcards"
+    sql: ${TABLE}.bc_open_to_buy
+
+  - dimension: borrower.bc_util
+    description: "Ratio of total current balance to high credit/credit limit for all bankcard accounts"
+    type: number
+    format: "%0.2f%"
+    sql: trim(trailing '%' from trim(${TABLE}.bc_util))::float
+    
+  - dimension: borrower.bc_util_tier
+    type: tier
+    tiers: [20,40,60,80]
+    sql: ${borrower.bc_util}
+
+  - dimension: borrower.chargeoff_within_12_mths
+    description: "Number of charge-offs within 12 months"
+    type: int
+    sql: ${TABLE}.chargeoff_within_12_mths
+
+  - dimension: collection_recovery_fee
+    description: "Post charge off collection fee"
+    type: number
+    sql: ${TABLE}.collection_recovery_fee
+
+  - dimension: borrower.collections_12_mths_ex_med
+    description: "Number of collections in 12 months excluding medical collections"
+    type: int
+    sql: ${TABLE}.collections_12_mths_ex_med
+
+  - dimension: borrower.delinq_2yrs
+    description: "The number of 30+ days past-due incidences of delinquency in the borrower's credit file for the past 2 years"
+    type: int
+    sql: ${TABLE}.delinq_2yrs
+
+  - dimension: borrower.delinquent_amount
+    description: "The past-due amount owed for the accounts on which the borrower is now delinquent"
+    type: int
+    sql: ${TABLE}.delinq_amnt
+
+  - dimension: borrower.revol_bal
+    description: "Total credit revolving balance"
+    type: int
+    sql: ${TABLE}.revol_bal
+
+  - dimension: borrower.revol_util
+    type: number
+    description: "Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit"
+    format: "%0.2f%"
+    sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float
+    
+  - dimension: borrower.revol_util_tier
+    type: tier
+    tiers: [20,40,60,80]
+    sql: ${borrower.revol_util}
+    
+  - dimension_group: borrower.last_credit_pull
+    type: time
+    timeframes: [date, week, month]
+    convert_tz: false
+    sql: ${TABLE}.last_credit_pull_d
+    
+
+  - dimension: borrower.inquiries_last_6mths
+    type: int
+    description: "The number of inquiries by creditors during the past 6 months"
+    sql: ${TABLE}.inq_last_6mths
+
+  - dimension: borrower.is_income_verified
+    sql: ${TABLE}.is_inc_v    
+
+  - dimension: borrower.last_fico_range_high_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${TABLE}.last_fico_range_high
+
+  - dimension: borrower.last_fico_range_low_tier
+    type: tier
+    tiers: [450,550,650,750,850]
+    sql: ${TABLE}.last_fico_range_low    
+
+  - dimension: borrower.mo_sin_old_il_acct
+    description: "Months since oldest installment account opened"
+    sql: ${TABLE}.mo_sin_old_il_acct
+
+  - dimension: borrower.mo_sin_old_rev_tl_op
+    description: "Months since oldest revolving account opened"
+    sql: ${TABLE}.mo_sin_old_rev_tl_op
+
+  - dimension: borrower.mo_sin_rcnt_rev_tl_op
+    description: "Months since most recent revolving account opened"
+    sql: ${TABLE}.mo_sin_rcnt_rev_tl_op
+
+  - dimension: borrower.mo_sin_rcnt_tl
+    description: "Months since most recent account opened"
+    sql: ${TABLE}.mo_sin_rcnt_tl
+
+  - dimension: number_mortgage_accounts
+    sql: ${TABLE}.mort_acc
+
+  - dimension: borrower.mths_since_last_delinq
+    description: "The number of months since the borrower's last delinquency"
+    sql: ${TABLE}.mths_since_last_delinq
+
+  - dimension: borrower.mths_since_last_major_derog
+    description: "Months since most recent 90-day or worse rating"
+    sql: ${TABLE}.mths_since_last_major_derog
+
+  - dimension: borrower.mths_since_last_record
+    description: "The number of months since the last public record"
+    sql: ${TABLE}.mths_since_last_record
+
+  - dimension: borrower.mths_since_recent_bc
+    description: "Months since most recent bankcard account opened"
+    sql: ${TABLE}.mths_since_recent_bc
+
+  - dimension: borrower.mths_since_recent_bc_dlq
+    description: "Months since most recent bankcard delinquency"
+    sql: ${TABLE}.mths_since_recent_bc_dlq
+
+  - dimension: borrower.mths_since_recent_inq
+    description: "Months since most recent inquiry"
+    sql: ${TABLE}.mths_since_recent_inq
+
+  - dimension: borrower.mths_since_recent_revol_delinq
+    description: "Months since most recent revolving delinquency"
+    sql: ${TABLE}.mths_since_recent_revol_delinq    
+    
+  - dimension: borrower.tot_coll_amt
+    description: "Total collection amounts ever owed"
+    sql: ${TABLE}.tot_coll_amt
+
+  - dimension: borrower.tot_cur_bal
+    description: "Total current balance of all accounts"
+    sql: ${TABLE}.tot_cur_bal
+
+  - dimension: borrower.tot_hi_cred_lim
+    description: "Total high credit/credit limit"
+    sql: ${TABLE}.tot_hi_cred_lim
+
+  - dimension: borrower.total_acc
+    description: "The total number of credit lines currently in the borrower's credit file"
+    type: int
+    sql: ${TABLE}.total_acc
+
+  - dimension: borrower.total_bal_ex_mort
+    description: "Total credit balance excluding mortgage"
+    sql: ${TABLE}.total_bal_ex_mort
+
+  - dimension: borrower.bc_limit
+    description: "Total bankcard high credit/credit limit"
+    type: number
+    format: "$%d"
+    sql: ${TABLE}.total_bc_limit::int
+
+  - dimension: borrower.il_high_credit_limit
+    description: "Total installment high credit/credit limit"
+    type: number
+    format: "$%d"  
+    sql: ${TABLE}.total_il_high_credit_limit::int
+
+  - dimension: borrower.home_ownership
+    sql: ${TABLE}.home_ownership    
+
+  - dimension: borrower.num_accts_ever_120_pd
+    label: "BORROWER Number of Accounts Past Due 120"
+    description: "Number of accounts ever 120 or more days past due"
+    sql: ${TABLE}.num_accts_ever_120_pd
+
+  - dimension: borrower.num_actv_bc_tl
+    description: "Number of currently active bankcard accounts"
+    sql: ${TABLE}.num_actv_bc_tl
+
+  - dimension: borrower.num_actv_rev_tl
+    description: "Number of currently active revolving trades"
+    sql: ${TABLE}.num_actv_rev_tl
+
+  - dimension: borrower.num_bc_sats
+    description: "Number of satisfactory bankcard accounts"
+    sql: ${TABLE}.num_bc_sats
+
+  - dimension: borrower.num_bc_tl
+    description: "Number of bankcard accounts"
+    sql: ${TABLE}.num_bc_tl
+
+  - dimension: borrower.num_il_tl
+    description: "Number of installment accounts"
+    sql: ${TABLE}.num_il_tl
+
+  - dimension: borrower.num_op_rev_tl
+    description: "Number of open revolving accounts"
+    sql: ${TABLE}.num_op_rev_tl
+
+  - dimension: borrower.num_rev_accts
+    description: "Number of revolving accounts"
+    sql: ${TABLE}.num_rev_accts
+
+  - dimension: borrower.num_rev_tl_bal_gt_0
+    description: "Number of revolving trades with balance >0"
+    sql: ${TABLE}.num_rev_tl_bal_gt_0
+
+  - dimension: borrower.num_sats
+    description: "Number of satisfactory accounts"
+    sql: ${TABLE}.num_sats
+
+  - dimension: borrower.num_tl_120dpd_2m
+    description: "Number of accounts currently 120 days past due (updated in past 2 months)"
+    sql: ${TABLE}.num_tl_120dpd_2m
+
+  - dimension: borrower.num_tl_30dpd
+    description: "Number of accounts currently 30 days past due (updated in past 2 months)"
+    sql: ${TABLE}.num_tl_30dpd
+
+  - dimension: borrower.num_tl_90g_dpd_24m
+    description: "Number of accounts 90 or more days past due in last 24 months"
+    sql: ${TABLE}.num_tl_90g_dpd_24m
+
+  - dimension: borrower.num_tl_op_past_12m
+    description: "Number of accounts opened in past 12 months"
+    sql: ${TABLE}.num_tl_op_past_12m
+
+  - dimension: borrower.open_acc
+    description: "The number of open credit lines in the borrower's credit file"
+    type: int
+    sql: ${TABLE}.open_acc    
+
+  - dimension: borrower.percent_bc_gt_75
+    description: "Percentage of all bankcard accounts > 75% of limit"
+    sql: ${TABLE}.percent_bc_gt_75    
+
+  - dimension: borrower.pub_rec
+    description: "Number of derogatory public records"
+    type: int
+    sql: ${TABLE}.pub_rec
+
+  - dimension: borrower.pub_rec_bankruptcies
+    description: "Number of public record bankruptcies"
+    type: int
+    sql: ${TABLE}.pub_rec_bankruptcies    
+    
+###########################################################    
+### MEASURES/AGGREGATES
+###########################################################
+###########################################################    
+### LOAN
+###########################################################  
   
   - measure: total_outstanding_principal_inv
     type: sum
@@ -449,7 +528,6 @@
     format: "%0.2f%"
     sql: (POWER(1 + ${sum_of_returns} / NULLIF(${total_outstanding_principal_inv},0),12.0) - 1) * 100.0
     
-
   - measure: count
     type: count
     drill_fields: [id]
@@ -462,7 +540,7 @@
   - measure: verified_loans
     type: count
     filters:
-      is_inc_v: "Verified"
+      borrower.is_income_verified: "Verified"
     
   - measure: percent_verified
     type: number
@@ -471,98 +549,36 @@
     
   - measure: total_amount
     type: sum
-    sql: ${loan_amnt}
+    sql: ${loan_amount}
     format: "$%d"
     
   - measure: average_int_rate
     type: average
     format: "%0.2f%"
-    sql: ${int_rate}
+    sql: ${interest_rate}
     
-#     
-#     "id":111111,
-#     "memberId":222222,
-#     "loanAmount":1750.0,
-#     "fundedAmount":25.0,
-#     "term":36,
-#     "intRate":10.99,
-#     "expDefaultRate":3.5,
-#     "serviceFeeRate":0.85,
-#     "installment":57.29,
-#     "grade":"B",
-#     "subGrade":"B3",
-#     "empLength":0,
-#     "homeOwnership":"OWN",
-#     "annualInc":123432.0,
-#     "isIncV":"Requested",
-#     "acceptD":"2014-08-25T10:56:29.000-07:00",
-#     "expD":"2014-09-08T10:57:13.000-07:00",
-#     "listD":"2014-08-25T10:50:20.000-07:00",
-#     "creditPullD":"2014-08-25T10:56:18.000-07:00",
-#     "reviewStatusD":"2014-09-03T14:41:53.957-07:00",
-#     "reviewStatus":"NOT_APPROVED",
-#     "desc":"Loan description",
-#     "purpose":"debt_consolidation",
-#     "addrCity":"San Leandro",
-#     "addrState":"CA",
-#     "investorCount":"",
-#     "ilsExpD":"2014-08-25T11:00:00.000-07:00",
-#     "initialListStatus":"F",
-#     "empTitle":"",
-#     "accNowDelinq":"",
-#     "accOpenPast24Mths":23,
-#     "bcOpenToBuy":30000,
-#     "percentBcGt75":23.0,
-#     "bcUtil":23.0,
-#     "dti":0.0,
-#     "delinq2Yrs":1,
-#     "delinqAmnt":0.0,
-#     "earliestCrLine":"1984-09-15T00:00:00.000-07:00",
-#     "ficoRangeLow":750,
-#     "ficoRangeHigh":754,
-#     "inqLast6Mths":0,
-#     "mthsSinceLastDelinq":90,
-#     "mthsSinceLastRecord":0,
-#     "mthsSinceRecentInq":14,
-#     "mthsSinceRecentRevolDelinq":23,
-#     "mthsSinceRecentBc":23,
-#     "mortAcc":23,
-#     "openAcc":3,
-#     "pubRec":0,
-#     "totalBalExMort":13944,
-#     "revolBal":1.0,
-#     "revolUtil":0.0,
-#     "totalBcLimit":23,
-#     "totalAcc":4,
-#     "totalIlHighCreditLimit":12,
-#     "numRevAccts":28,
-#     "mthsSinceRecentBcDlq":52,
-#     "pubRecBankruptcies":0,
-#     "numAcctsEver120Ppd":12,
-#     "chargeoffWithin12Mths":0,
-#     "collections12MthsExMed":0,
-#     "taxLiens":0,
-#     "mthsSinceLastMajorDerog":12,
-#     "numSats":8,
-#     "numTlOpPast12m":0,
-#     "moSinRcntTl":12,
-#     "totHiCredLim":12,
-#     "totCurBal":12,
-#     "avgCurBal":12,
-#     "numBcTl":12,
-#     "numActvBcTl":12,
-#     "numBcSats":7,
-#     "pctTlNvrDlq":12,
-#     "numTl90gDpd24m":12,
-#     "numTl30dpd":12,
-#     "numTl120dpd2m":12,
-#     "numIlTl":12,
-#     "moSinOldIlAcct":12,
-#     "numActvRevTl":12,
-#     "moSinOldRevTlOp":12,
-#     "moSinRcntRevTlOp":11,
-#     "totalRevHiLim":12,
-#     "numRevTlBalGt0":12,
-#     "numOpRevTl":12,
-#     "totCollAmt":12    
+###########################################################    
+### BORROWER
+###########################################################  
 
+  - measure: borrower.bc_util_average
+    type: average
+    format: "%0.2f%"
+    sql: ${borrower.bc_util}
+    
+  - measure: borrower.revol_util_average
+    type: sum
+    format: "%0.2f%"
+    sql: ${borrower.revol_util}
+    
+    
+  - measure: borrower.average_bc_limit
+    type: average
+    format: "$%d"
+    sql: ${borrower.bc_limit}
+  
+  - measure: borrower.average_il_high_credit_limit
+    type: average
+    format: "$%d"
+    sql: ${borrower.il_high_credit_limit}
+    

@@ -6,15 +6,15 @@
 - template: liquid
 
 
-- explore: loan_rejects
+- explore: rejects
   conditionally_filter:
     application_date: after 2014
 
 - explore: loans
   conditionally_filter:
-    accept_d_date: after 2014
+    accepted_date: after 2014
     unless:
-    - member_id
+    - borrower.id
     - id
     
 - explore: listings

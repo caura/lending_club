@@ -1,3 +1,7 @@
+#########################
+# Description of fields:
+# https://www.lendingclub.com/developers/listed-loans.action
+#########################
 - view: listings
   fields:
 
@@ -6,7 +10,8 @@
     type: int
     sql: ${TABLE}."id"
 
-  - dimension: acc_now_delinq
+  - dimension: borrower.acc_now_delinq
+    description: "The number of accounts on which the borrower is now delinquent."
     type: number
     sql: ${TABLE}."accNowDelinq"
 
@@ -16,21 +21,34 @@
 
   - dimension_group: accept_d
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [hod, time, date, week, month]
     sql: ${TABLE}."acceptD"
 
+  #will be disconnected in the future
   - dimension: addr_city
     sql: ${TABLE}."addrCity"
 
   - dimension: addr_state
     sql: ${TABLE}."addrState"
 
+  #currently not used (for future campability)
   - dimension: addr_zip
     sql: ${TABLE}."addrZip"
 
+  - dimension: annual_inc_tiers
+    type: tier
+    tiers: [30000,50000,70000,90000,110000]
+    sql: ${annual_inc}
+
   - dimension: annual_inc
     type: number
+    hidden: true
     sql: ${TABLE}."annualInc"
+    
+  - measure: average_income
+    type: average
+    format: "$%d"
+    sql: ${annual_inc}
 
   - dimension_group: as_of
     type: time
