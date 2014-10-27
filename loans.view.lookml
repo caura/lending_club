@@ -264,9 +264,9 @@
     type: number
     sql: ${TABLE}.annual_inc
     
-  - dimension: borrower.annual_inc_tier
+  - dimension: borrower.annual_income_tier
     type: tier
-    tiers: [10000,40000,60000,80000]
+    tiers: [30000,50000,70000,90000,110000]
     sql: ${borrower.annual_income}
 
   - dimension: borrower.average_current_balance
@@ -369,7 +369,7 @@
     description: "Months since most recent account opened"
     sql: ${TABLE}.mo_sin_rcnt_tl
 
-  - dimension: number_mortgage_accounts
+  - dimension: borrower.number_mortgage_accounts
     sql: ${TABLE}.mort_acc
 
   - dimension: borrower.mths_since_last_delinq
