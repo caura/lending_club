@@ -47,7 +47,6 @@
   - dimension: initial_list_status
     sql: ${TABLE}."initialListStatus"
     
-
   - dimension: installment
     type: number
     sql: ${TABLE}."installment"
@@ -55,6 +54,25 @@
   - dimension: interest_rate
     type: number
     sql: ${TABLE}."intRate"
+    
+#does this field exist?
+  - dimension: number_of_investors
+    type: number
+    sql: ${TABLE}."investorCount"
+
+  - dimension_group: listed
+    type: time
+    timeframes: [time, date, week, month]
+    sql: ${TABLE}."listD"
+
+  - dimension: loan_amount
+    type: number
+    sql: ${TABLE}."loanAmount"
+
+  - dimension: looker_is_pull_all
+    description: "Was this update on the latest listed or a pull of all currently listed"
+    type: yesno
+    sql: ${TABLE}."looker_is_pull_all"   
     
 ###########################################################    
 ### APPLICANT
@@ -160,27 +178,8 @@
     type: number
     sql: ${TABLE}."inqLast6Mths"
 
-#does this field exist?
-  - dimension: number_of_investors
-    type: number
-    sql: ${TABLE}."investorCount"
-
   - dimension: applicant.is_income_verified
     sql: ${TABLE}."isIncV"
-
-  - dimension_group: listed
-    type: time
-    timeframes: [time, date, week, month]
-    sql: ${TABLE}."listD"
-
-  - dimension: loan_amount
-    type: number
-    sql: ${TABLE}."loanAmount"
-
-  - dimension: looker_is_pull_all
-    description: "Was this update on the latest listed or a pull of all currently listed"
-    type: yesno
-    sql: ${TABLE}."looker_is_pull_all"
 
   - dimension: applicant.id
     type: int
@@ -374,6 +373,7 @@
     sql: ${TABLE}."totalIlHighCreditLimit"
 
   - dimension: applicant.total_rev_hi_lim
+    description: "Total revolving high credit/credit limit"
     type: int
     sql: ${TABLE}."totalRevHiLim"
 

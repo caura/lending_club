@@ -427,7 +427,7 @@
     format: "$%d"
     sql: ${TABLE}.total_bc_limit::int
 
-  - dimension: borrower.il_high_credit_limit
+  - dimension: borrower.installment_high_credit_limit
     description: "Total installment high credit/credit limit"
     type: number
     format: "$%d"  
@@ -570,7 +570,6 @@
     type: sum
     format: "%0.2f%"
     sql: ${borrower.revol_util}
-    
     
   - measure: borrower.average_bc_limit
     type: average
