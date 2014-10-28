@@ -266,7 +266,7 @@
     type: number
     sql: ${TABLE}."numRevAccts"
 
-  - dimension: applicant.num_rev_tl_bal_gt0
+  - dimension: applicant.num_rev_tl_bal_gt_0
     type: number
     sql: ${TABLE}."numRevTlBalGt0"
 
@@ -274,19 +274,19 @@
     type: number
     sql: ${TABLE}."numSats"
 
-  - dimension: applicant.num_tl120dpd2m
+  - dimension: applicant.num_tl_120dpd_2m
     type: number
     sql: ${TABLE}."numTl120dpd2m"
 
-  - dimension: applicant.num_tl30dpd
+  - dimension: applicant.num_tl_30dpd
     type: number
     sql: ${TABLE}."numTl30dpd"
 
-  - dimension: applicant.num_tl90g_dpd24m
+  - dimension: applicant.num_tl_90g_dpd_24m
     type: number
     sql: ${TABLE}."numTl90gDpd24m"
 
-  - dimension: applicant.num_tl_op_past12m
+  - dimension: applicant.num_tl_op_past_12m
     type: number
     sql: ${TABLE}."numTlOpPast12m"
 
@@ -298,7 +298,7 @@
     type: number
     sql: ${TABLE}."pctTlNvrDlq"
 
-  - dimension: applicant.percent_bc_gt75
+  - dimension: applicant.percent_bc_gt_75
     type: number
     sql: ${TABLE}."percentBcGt75"
 
@@ -325,7 +325,7 @@
     type: number
     sql: ${TABLE}."revolBal"
 
-  - dimension: applicant.revol_util
+  - dimension: applicant.revol_utilization
     type: number
     sql: ${TABLE}."revolUtil"
 
@@ -356,7 +356,7 @@
     type: int
     sql: ${TABLE}."totHiCredLim"
 
-  - dimension: applicant.total_acc
+  - dimension: applicant.total_accounts
     type: number
     sql: ${TABLE}."totalAcc"
 
@@ -366,9 +366,9 @@
 
   - dimension: applicant.total_bc_limit
     type: int
-    sql: ${TABLE}."totalBcLimit"
+    sql: ${TABLE}."totalBcLimit"::int
 
-  - dimension: applicant.total_il_high_credit_limit
+  - dimension: applicant.installment_high_credit_limit
     type: number
     sql: ${TABLE}."totalIlHighCreditLimit"
 

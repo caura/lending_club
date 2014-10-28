@@ -192,15 +192,15 @@
     html: |
       <a href="{{ value }}" target="_blank">LendingClub <img src="/images/qr-graph-line@2x.png" height=20 width=20</a>
     
-  - dimension: return_num
-    type: number
-    hidden: true
-    sql: 0.99 * (${total_rec_int} + ${total_rec_late_fee}) - ${out_prncp_inv} + (${recoveries} - ${collection_recovery_fee})
-  
-  - dimension: sum_of_returns
-    hidden: true
-    type: sum
-    sql: ${return_num}
+#   - dimension: return_num
+#     type: number
+#     hidden: true
+#     sql: 0.99 * (${total_rec_int} + ${total_rec_late_fee}) - ${out_prncp_inv} + (${recoveries} - ${collection_recovery_fee})
+#   
+#   - dimension: sum_of_returns
+#     hidden: true
+#     type: sum
+#     sql: ${return_num}
     
 ###########################################################    
 ### BORROWER
@@ -317,16 +317,15 @@
     type: int
     sql: ${TABLE}.revol_bal
 
-  - dimension: borrower.revol_util
+  - dimension: borrower.revol_utilization
+    hidden: true
     type: number
-    description: "Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit"
-    format: "%0.2f%"
     sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float
     
   - dimension: borrower.revol_util_tier
     type: tier
     tiers: [20,40,60,80]
-    sql: ${borrower.revol_util}
+    sql: ${borrower.revol_utilization}
     
   - dimension_group: borrower.last_credit_pull
     type: time
@@ -412,7 +411,7 @@
     description: "Total high credit/credit limit"
     sql: ${TABLE}.tot_hi_cred_lim
 
-  - dimension: borrower.total_acc
+  - dimension: borrower.total_accounts
     description: "The total number of credit lines currently in the borrower's credit file"
     type: int
     sql: ${TABLE}.total_acc
@@ -523,10 +522,10 @@
     type: sum
     sql: ${out_prncp_inv}
   
-  - measure: nar
-    type: number
-    format: "%0.2f%"
-    sql: (POWER(1 + ${sum_of_returns} / NULLIF(${total_outstanding_principal_inv},0),12.0) - 1) * 100.0
+#   - measure: nar
+#     type: number
+#     format: "%0.2f%"
+#     sql: (POWER(1 + ${sum_of_returns} / NULLIF(${total_outstanding_principal_inv},0),12.0) - 1) * 100.0
     
   - measure: count
     type: count
@@ -569,7 +568,7 @@
   - measure: borrower.revol_util_average
     type: sum
     format: "%0.2f%"
-    sql: ${borrower.revol_util}
+    sql: ${borrower.revol_utilization}
     
   - measure: borrower.average_bc_limit
     type: average
@@ -579,5 +578,17 @@
   - measure: borrower.average_il_high_credit_limit
     type: average
     format: "$%d"
-    sql: ${borrower.il_high_credit_limit}
+    sql: ${borrower.installment_high_credit_limit}
+    
+  - measure: borrower.average_revol_utilization
+    type: average
+    description: "Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit"
+    format: "%0.2f%"
+    sql:  ${borrower.revol_utilization}
+    
+  - measure: sum_recoveries
+    type: sum
+    format: "$%d"
+    sql: (${total_rec_int} + ${total_rec_late_fee}) + (${recoveries} - ${collection_recovery_fee})
+    
     

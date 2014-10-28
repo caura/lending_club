@@ -16,6 +16,13 @@
     unless:
     - borrower.id
     - id
+    - issue_date
+    - last_payment_date
+    - next_payment_date
+    - borrower.last_credit_pull_date
+    - expired_date
+    - listed_date
+    - issue_quarter
+    - fiscal_yyyyq
     
 - explore: listings
-
