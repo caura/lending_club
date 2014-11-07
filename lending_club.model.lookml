@@ -26,3 +26,7 @@
     - fiscal_yyyyq
     
 - explore: listings
+  persist_for: 10 minutes
+  joins:
+    - join: distributions
+      sql_on: ${applicant.id} = ${distributions.uid}

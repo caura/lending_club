@@ -15,7 +15,7 @@
 
   - dimension_group: accepted
     type: time
-    timeframes: [hod, time, date, week, month]
+    timeframes: [hod, time, date, week, month, dow]
     sql: ${TABLE}."acceptD"
 
   - dimension_group: as_of
@@ -53,6 +53,7 @@
 
   - dimension: interest_rate
     type: number
+    format: "%0.2f%"
     sql: ${TABLE}."intRate"
     
 #does this field exist?
@@ -62,12 +63,17 @@
 
   - dimension_group: listed
     type: time
-    timeframes: [time, date, week, month]
+    timeframes: [time, date, week, month, hod, dow]
     sql: ${TABLE}."listD"
 
   - dimension: loan_amount
     type: number
     sql: ${TABLE}."loanAmount"
+    
+  - dimension: loan_amount_tiers
+    type: tier
+    tiers: [5000,10000,15000,20000,35000]
+    sql: ${loan_amount}   
 
   - dimension: looker_is_pull_all
     description: "Was this update on the latest listed or a pull of all currently listed"
@@ -89,9 +95,9 @@
     type: number
     sql: ${TABLE}."accOpenPast24Mths"
 
-  #will be disconnected in the future
-  - dimension: applicant.address_city
-    sql: ${TABLE}."addrCity"
+#DEPRECATED
+#   - dimension: applicant.address_city
+#     sql: ${TABLE}."addrCity"
 
   - dimension: applicant.address_state
     sql: ${TABLE}."addrState"
@@ -104,10 +110,15 @@
     type: tier
     tiers: [30000,50000,70000,90000,110000]
     sql: ${applicant.annual_income}
+    
+#   - dimension: decile_income_bucket
+#     type: tier
+#     tiers: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+#     sql: ${distributions.income_accum_metric_pct}
+#     required_joins: [distributions]
 
   - dimension: applicant.annual_income
     type: number
-    hidden: true
     sql: ${TABLE}."annualInc"
 
   - dimension: applicant.average_current_balance
@@ -153,8 +164,13 @@
     sql: ${TABLE}."earliestCrLine"
 
   - dimension: applicant.emp_length
-    type: number
-    sql: ${TABLE}."empLength"
+    sql: |
+      CASE
+        WHEN ${TABLE}."empLength" < 12 THEN '< 1 year'
+        WHEN ${TABLE}."empLength" = 12 THEN '1 year'
+        WHEN ${TABLE}."empLength" >= 120 THEN '10+ years'
+        ELSE floor(${TABLE}."empLength" / 12.0) || ' years'
+      END
 
   - dimension: applicant.emp_title
     sql: ${TABLE}."empTitle"
@@ -328,6 +344,11 @@
   - dimension: applicant.revol_utilization
     type: number
     sql: ${TABLE}."revolUtil"
+    
+  - dimension: applicant.revol_util_tier
+    type: tier
+    tiers: [20,40,60,80]
+    sql: ${applicant.revol_utilization}  
 
   - dimension: service_fee_rate
     type: number
@@ -386,7 +407,7 @@
 
   - measure: count
     type: count
-    drill_fields: [id]
+    drill_fields: default*
     
 ###########################################################    
 ### APPLICANT
@@ -396,4 +417,17 @@
     type: average
     format: "$%d"
     sql: ${applicant.annual_income}
+    
+
+  # ----- Detail ------
+  sets:
+    default:
+      - id
+      - applicant.id
+      - applicant.emp_length
+      - funded_amount
+      - grade
+      - term
+      - interest_rate
+      - purpose
 
