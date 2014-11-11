@@ -91,6 +91,11 @@
     type: int
     sql: ${TABLE}.loan_amnt
 
+  - dimension: loan_amount_tiers
+    type: tier
+    tiers: [5000,10000,15000,20000,35000]
+    sql: ${loan_amount}
+
   - dimension: loan_status
     sql: ${TABLE}.loan_status
 
@@ -250,7 +255,7 @@
 
   - dimension_group: accepted
     type: time
-    timeframes: [date, week, month]
+    timeframes: [date, week, month, year]
     convert_tz: false
     sql: ${TABLE}.accept_d
 
@@ -529,7 +534,7 @@
     
   - measure: count
     type: count
-    drill_fields: [id]
+    drill_fields: default*
     
   - measure: percent_of_total
     decimals: 2
@@ -546,15 +551,42 @@
     format: "%0.2f%"
     sql: 100.0 * ${verified_loans} / NULLIF(${count},null)
     
-  - measure: total_amount
+  - measure: total_loan_amount
     type: sum
-    sql: ${loan_amount}
     format: "$%d"
+    sql: ${loan_amount}
+    
+  - measure: total_funded_amount
+    type: sum
+    format: "$%d"
+    sql: ${funded_amount}
+      
+  - measure: _total_loan_amount      
+    hidden: true
+    type: number
+    format: "$%d"
+    sql: ${total_loan_amount}
+    html: |
+      <font size="7">{{ rendered_value }}</font>      
     
   - measure: average_int_rate
     type: average
     format: "%0.2f%"
     sql: ${interest_rate}
+    
+
+  - measure: sum_recoveries
+    type: sum
+    format: "$%d"
+    sql: (${total_rec_int} + ${total_rec_late_fee}) + (${recoveries} - ${collection_recovery_fee})
+    
+  - measure: _sum_recoveries
+    hidden: true
+    type: number
+    format: "$%d"
+    sql: ${sum_recoveries}
+    html: |
+      <font size="7">{{ rendered_value }}</font>     
     
 ###########################################################    
 ### BORROWER
@@ -586,9 +618,15 @@
     format: "%0.2f%"
     sql:  ${borrower.revol_utilization}
     
-  - measure: sum_recoveries
-    type: sum
-    format: "$%d"
-    sql: (${total_rec_int} + ${total_rec_late_fee}) + (${recoveries} - ${collection_recovery_fee})
     
-    
+  # ----- Detail ------
+  sets:
+    default:
+      - id
+      - borrower.id
+      - borrower.emp_length
+      - funded_amount
+      - grade
+      - term
+      - interest_rate
+      - purpose

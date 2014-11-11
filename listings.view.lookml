@@ -35,6 +35,14 @@
   - dimension: grade
     sql: ${TABLE}."grade"
     
+  - dimension: grade_linked
+    label: "GRADE"
+    sql: ${TABLE}."grade"
+    html: |
+      {{ linked_value }}
+      <a href="/dashboards/lending_club/historical_perfomance?grade={{ value | encode_uri }}" target="_new">
+      <img src="/images/qr-graph-line@2x.png" height=20 width=20></a>
+    
   - dimension: description
     sql: ${TABLE}."desc"
     
@@ -186,6 +194,16 @@
   - dimension: applicant.fico_range_low
     type: number
     sql: ${TABLE}."ficoRangeLow"
+    
+  - dimension: applicant.fico_high_tier
+    type: tier
+    tiers: [650,700,750,800,900]
+    sql: ${applicant.fico_range_high}
+    
+  - dimension: applicant.fico_low_tier
+    type: tier
+    tiers: [600,750,900]
+    sql: ${applicant.fico_range_low}    
 
   - dimension: applicant.home_ownership
     sql: ${TABLE}."homeOwnership"
@@ -408,6 +426,43 @@
   - measure: count
     type: count
     drill_fields: default*
+    
+  - measure: total_funded_amount
+    type: sum
+    format: "$%d"
+    sql: ${funded_amount}
+    
+  - measure: total_loan_amount
+    type: sum
+    format: "$%d"
+    sql: ${loan_amount}
+    
+  - measure: _total_funded_amount    
+    hidden: true
+    type: number
+    format: "$%d"
+    sql: ${total_funded_amount}
+    html: |
+      <font size="7">{{ rendered_value }}</font>    
+    
+  - measure: _total_loan_amount    
+    hidden: true
+    type: number
+    format: "$%d"
+    sql: ${total_loan_amount}
+    html: |
+      <font size="7">{{ rendered_value }}</font>     
+    
+  - measure: average_interest_rate
+    type: average
+    format: "%0.2f%"
+    sql: ${interest_rate}
+    
+  - measure: average_term
+    description: "number of months"
+    type: average
+    format: "%0.1f"
+    sql: ${term}
     
 ###########################################################    
 ### APPLICANT

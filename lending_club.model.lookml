@@ -12,11 +12,11 @@
 
 - explore: loans
   conditionally_filter:
-    accepted_date: after 2014
+    issue_date: after 2014
     unless:
     - borrower.id
     - id
-    - issue_date
+    - accepted_date
     - last_payment_date
     - next_payment_date
     - borrower.last_credit_pull_date

@@ -1,4 +1,4 @@
-- dashboard: lending_club_pulse
+- dashboard: application_pulse
   title: "Application Pulse - Lending Club"
   layout: tile
   tile_size: 100
@@ -49,7 +49,7 @@
     explore: listings
     dimension: applicant.is_income_verified
     
-  - name: intrest_rate
+  - name: interest_rate
     title: "Interest Rate"
     type: number_filter
 
@@ -61,7 +61,7 @@
     model: lending_club
     explore: listings
     measures: [listings.count]
-    sorts: [distributions.income_decile_bucket, listings.count desc]
+    sorts: [listings.count desc]
     limit: 500
     listen:
       annual_income: applicant.annual_income
@@ -72,9 +72,49 @@
       loan_amount: listings.loan_amount
       grade: listings.grade
       purpose: listings.purpose
-      intrest_rate: listings.intrest_rate       
+      interest_rate: listings.interest_rate       
     width: 4
     height: 3
+    
+  - name: add_a_unique_name_523
+    title: "Total Amount Applied for"
+    type: single_value
+    model: lending_club
+    explore: listings
+    measures: [listings._total_loan_amount]
+    limit: 500
+    listen:
+      annual_income: applicant.annual_income
+      address_state: applicant.address_state
+      emp_length: applicant.emp_length
+      is_income_verified: applicant.is_income_verified      
+      date: listings.listed_date
+      loan_amount: listings.loan_amount
+      grade: listings.grade
+      purpose: listings.purpose
+      interest_rate: listings.interest_rate       
+    width: 4
+    height: 3    
+    
+  - name: add_a_unique_name_524
+    title: "Total Amount Funded"
+    type: single_value
+    model: lending_club
+    explore: listings
+    measures: [listings._total_funded_amount]
+    limit: 500
+    listen:
+      annual_income: applicant.annual_income
+      address_state: applicant.address_state
+      emp_length: applicant.emp_length
+      is_income_verified: applicant.is_income_verified      
+      date: listings.listed_date
+      loan_amount: listings.loan_amount
+      grade: listings.grade
+      purpose: listings.purpose
+      interest_rate: listings.interest_rate       
+    width: 4
+    height: 3    
 
   - name: add_a_unique_name_793
     title: "Loan Applications by Accepted Hour (last 3 days)"
@@ -92,7 +132,7 @@
       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
-      intrest_rate: listings.intrest_rate      
+      interest_rate: listings.interest_rate      
     filters:
       listings.listed_date: 3 days
     sorts: [listings.listed_date asc]
@@ -120,7 +160,7 @@
       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
-      intrest_rate: listings.intrest_rate
+      interest_rate: listings.interest_rate
     quantize_colors: false
     colors: ["#efefef","#C488DD","#80237D","#651F81"]    
     map: usa
@@ -143,7 +183,7 @@
       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
-      intrest_rate: listings.intrest_rate
+      interest_rate: listings.interest_rate
     sorts: [listings.count desc]
     limit: 500
     width:
@@ -184,11 +224,51 @@
       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
-      intrest_rate: listings.intrest_rate
+      interest_rate: listings.interest_rate
     limit: 500
     show_null_labels: false
     stacking: ''
     x_axis_scale: auto
+
+  - name: add_a_unique_name_886
+    title: "Income Distribution"
+    type: looker_line
+    model: lending_club
+    explore: listings
+    dimensions: [distributions.income_decile_bucket]
+    measures: [listings.count, applicant.average_income]
+    sorts: [distributions.income_decile_bucket asc]
+    limit: 500
+    listen:
+      annual_income: applicant.annual_income
+      address_state: applicant.address_state
+      emp_length: applicant.emp_length
+      is_income_verified: applicant.is_income_verified      
+      date: listings.listed_date
+      loan_amount: listings.loan_amount
+      grade: listings.grade
+      purpose: listings.purpose
+      interest_rate: listings.interest_rate     
+    show_null_points: true
+    show_null_labels: false
+    x_axis_scale: ordinal
+    y_axis_orientation: [left, right]
+    stacking: ''
+    point_style: none
+    interpolation: linear
+    height: 3
+    
+  - name: add_a_unique_name_562
+    title: "Grade"
+    type: table
+    model: lending_club
+    explore: listings
+    dimensions: [listings.grade_linked]
+    measures: [listings.average_interest_rate, listings.total_loan_amount, listings.count,
+      listings.average_term]
+    sorts: [listings.grade_linked]
+    limit: 500
+    height: 3
     
   - name: add_a_unique_name_949
     title: "Week-over-Week Listings by Grade"
@@ -209,22 +289,23 @@
       loan_amount: listings.loan_amount
       grade: listings.grade
       purpose: listings.purpose
-      intrest_rate: listings.intrest_rate    
+      interest_rate: listings.interest_rate    
     show_null_points: true
     stacking: ''
     show_null_labels: false
     interpolation: step
     x_axis_scale: auto
-    point_style: none
-
-  - name: add_a_unique_name_886
-    title: "Income Distribution"
-    type: looker_line
+    point_style: none    
+    
+  - name: add_a_unique_name_777
+    title: "Applications by Credit Score and Purpose"
+    type: looker_donut_multiples
     model: lending_club
     explore: listings
-    dimensions: [distributions.income_decile_bucket]
-    measures: [listings.count, applicant.average_income]
-    sorts: [distributions.income_decile_bucket asc]
+    dimensions: [listings.purpose, applicant.fico_low_tier]
+    pivots: [listings.purpose]
+    measures: [listings.count]
+    sorts: [listings.grade, listings.purpose, listings.count desc 0]
     limit: 500
     listen:
       annual_income: applicant.annual_income
@@ -235,14 +316,16 @@
       loan_amount: listings.loan_amount
       grade: listings.grade
       purpose: listings.purpose
-      intrest_rate: listings.intrest_rate     
-    show_null_points: true
+      interest_rate: listings.interest_rate     
     show_null_labels: false
-    x_axis_scale: ordinal
-    y_axis_orientation: [left, right]
-    stacking: ''
-    point_style: none
-    interpolation: linear
+    colors: ["#651F81","#EF7F0F","#555E61","#2DA7CE"]
+    limit: 24
+    width: 6
+    height: 4
+    charts_across: 3
+    
+      
+  
 
 
   

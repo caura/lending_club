@@ -62,6 +62,7 @@
   
   - dimension: uid
     type: number
+    hidden: true
     sql: ${TABLE}.uid
 
   - dimension: income_quartile_bucket
