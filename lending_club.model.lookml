@@ -1,4 +1,4 @@
-- connection: segah_lending
+- connection: segah_test
 
 - scoping: true                  # for backward compatibility
 - include: "*.view.lookml"       # include all the views
