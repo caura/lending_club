@@ -74,7 +74,7 @@
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
     width: 4
-    height: 3
+    height: 2
     
   - name: add_a_unique_name_523
     title: "Total Amount Applied for"
@@ -94,7 +94,7 @@
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
     width: 4
-    height: 3    
+    height: 2   
     
   - name: add_a_unique_name_524
     title: "Total Amount Funded"
@@ -114,7 +114,7 @@
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
     width: 4
-    height: 3    
+    height: 2    
 
   - name: add_a_unique_name_793
     title: "Loan Applications by Accepted Hour (last 3 days)"

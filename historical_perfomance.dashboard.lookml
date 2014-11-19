@@ -74,7 +74,7 @@
       purpose: loans.purpose
       interest_rate: loans.interest_rate       
     width: 4
-    height: 3
+    height: 2
     
   - name: add_a_unique_name_523
     title: "Total Principal"
@@ -94,7 +94,7 @@
       purpose: loans.purpose
       interest_rate: loans.interest_rate       
     width: 4
-    height: 3
+    height: 2
     
   - name: add_a_unique_name_25
     title: "Total Recoveries"
@@ -116,7 +116,7 @@
     limit: 500
     show_null_labels: false
     width: 4
-    height: 3
+    height: 2
     
   - name: add_a_unique_name_350
     title: "Total Loans and Lent Amount by Loan Status"
