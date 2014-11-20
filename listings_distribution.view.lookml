@@ -59,7 +59,6 @@
   
   - filter: date
   
-  
   - dimension: uid
     type: number
     hidden: true

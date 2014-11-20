@@ -240,15 +240,15 @@
     sorts: [distributions.income_decile_bucket asc]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
-      emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
-      date: listings.listed_date
-      loan_amount: listings.loan_amount
-      grade: listings.grade
-      purpose: listings.purpose
-      interest_rate: listings.interest_rate     
+      annual_income: distributions.annual_income
+      address_state: distributions.address_state
+      emp_length: distributions.emp_length
+      is_income_verified: distributions.is_income_verified      
+      date: distributions.date
+      loan_amount: distributions.loan_amount
+      grade: distributions.grade
+      purpose: distributions.purpose
+      interest_rate: distributions.interest_rate
     show_null_points: true
     show_null_labels: false
     x_axis_scale: ordinal
