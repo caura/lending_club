@@ -30,3 +30,7 @@
   joins:
     - join: distributions
       sql_on: ${applicant.id} = ${distributions.uid}
+      
+- explore: suggest_listings
+  from: listings
+  persist_for: 720 hours

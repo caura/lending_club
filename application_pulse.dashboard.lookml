@@ -13,7 +13,7 @@
   - name: address_state
     title: "State"
     type: suggest_filter
-    explore: listings
+    explore: suggest_listings
     dimension: applicant.address_state
 
   - name: annual_income
@@ -28,25 +28,25 @@
   - name: grade
     title: "Grade"
     type: suggest_filter
-    explore: listings
-    dimension: listings.grade
+    explore: suggest_listings
+    dimension: suggest_listings.grade
     
-  - name: emp_length
-    title: "Employment Length"
-    type: suggest_filter
-    explore: listings
-    dimension: applicant.emp_length
+#   - name: emp_length
+#     title: "Employment Length"
+#     type: number_filter
+#     explore: suggest_listings
+#     dimension: applicant.emp_length
 
   - name: purpose
     title: "Loan Purpose"
     type: suggest_filter
-    explore: listings
-    dimension: listings.purpose
+    explore: suggest_listings
+    dimension: suggest_listings.purpose
     
   - name: is_income_verified
     title: "Inc Verification"
     type: suggest_filter
-    explore: listings
+    explore: suggest_listings
     dimension: applicant.is_income_verified
     
   - name: interest_rate

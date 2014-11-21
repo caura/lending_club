@@ -16,15 +16,6 @@
         WHERE
           {% condition address_state %} a."addrState" {% endcondition %}
           AND
-          {% condition emp_length %} 
-            CASE
-              WHEN a."empLength" < 12 THEN '< 1 year'
-              WHEN a."empLength" = 12 THEN '1 year'
-              WHEN a."empLength" >= 120 THEN '10+ years'
-              ELSE floor(a."empLength" / 12.0) || ' years'
-            END 
-          {% endcondition %}
-          AND
           {% condition is_income_verified %} a."isIncV" {% endcondition %}
           AND
           {% condition date %} a."listD" {% endcondition %}
@@ -41,23 +32,37 @@
       ) as b
       
   fields:
+##  AND
+##          {% condition emp_length %} a."empLength" {% endcondition %}
+#
+#             CASE
+#               WHEN a."empLength" < 12 THEN '< 1 year'
+#               WHEN a."empLength" = 12 THEN '1 year'
+#               WHEN a."empLength" >= 120 THEN '10+ years'
+#               ELSE floor(a."empLength" / 12.0) || ' years'
+#             END   
   - filter: address_state
 
   - filter: annual_income
+    type: number
 
   - filter: loan_amount
+    type: number
     
   - filter: grade
+#     
+#   - filter: emp_length
+#     type: number
     
-  - filter: emp_length
-
   - filter: purpose
     
   - filter: is_income_verified
     
   - filter: intrest_rate
-  
+    type: number
+    
   - filter: date
+    type: datetime
   
   - dimension: uid
     type: number
