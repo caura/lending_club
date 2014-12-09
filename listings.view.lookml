@@ -33,6 +33,7 @@
     sql: ${TABLE}."fundedAmount"
 
   - dimension: grade
+    suggestions: [A,B,C,D,E,F,G]
     sql: ${TABLE}."grade"
     
   - dimension: grade_linked
@@ -213,6 +214,7 @@
     sql: ${TABLE}."inqLast6Mths"
 
   - dimension: applicant.is_income_verified
+    suggestions: [NOT_VERIFIED,SOURCE_VERIFIED,VERIFIED]
     sql: ${TABLE}."isIncV"
 
   - dimension: applicant.id

@@ -4,7 +4,7 @@
       SELECT
         b.uid
         , b.metric
-        , sum(b.metric_pct) over (order by b.metric_pct DESC rows between current row and unbounded following) as accum_metric_pct
+        , sum(b.metric_pct) over (order by b.metric_pct ASC ROWS UNBOUNDED PRECEDING) as accum_metric_pct
       FROM
       (
         SELECT
@@ -93,3 +93,6 @@
     type: number
     format: "%d%"
     sql: CEIL(${TABLE}.accum_metric_pct*10)*10
+    
+  - dimension: my_count
+    sql: ${TABLE}.count

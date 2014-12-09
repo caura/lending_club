@@ -28,8 +28,8 @@
   - name: grade
     title: "Grade"
     type: suggest_filter
-    explore: suggest_listings
-    dimension: suggest_listings.grade
+    explore: listings
+    dimension: listings.grade
     
 #   - name: emp_length
 #     title: "Employment Length"
@@ -46,7 +46,7 @@
   - name: is_income_verified
     title: "Inc Verification"
     type: suggest_filter
-    explore: suggest_listings
+    explore: listings
     dimension: applicant.is_income_verified
     
   - name: interest_rate
