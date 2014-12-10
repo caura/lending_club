@@ -5,12 +5,12 @@ This model is built on top of LendingClub dataset - provided by LendingClub as i
 
 ## [LC API Website](http://www.lendingclub.com/developers/lc-api.action)
 
+Actual python code for API pull and Database push for listings table, can be found here: 
+
 ## [ETL script](https://github.com/looker/lendingclub)
 
 
 # Dashboards
-
-Actual python code for API pull and Database push for listings table, can be found here: 
 
 ## [1) Main Application Dashboard](/dashboards/lending_club/application_pulse)
 
