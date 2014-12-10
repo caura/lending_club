@@ -12,7 +12,7 @@ Actual python code for API pull and Database push for listings table, can be fou
 
 # Dashboards
 
-## [1) Main Application Dashboard](/dashboards/lending_club/application_pulse)
+## [1) Main Application Dashboard](https://sandbox.looker.com/dashboards/lending_club/application_pulse)
 
-## [2) Historical Perfomance Dashboard](/dashboards/lending_club/historical_perfomance)
+## [2) Historical Perfomance Dashboard](https://sandbox.looker.com/dashboards/lending_club/historical_perfomance)
 
