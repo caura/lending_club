@@ -428,6 +428,7 @@
   - measure: count
     type: count
     drill_fields: default*
+    format: "$%d"
     
   - measure: total_funded_amount
     type: sum
