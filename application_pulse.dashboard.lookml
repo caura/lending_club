@@ -295,9 +295,9 @@
     show_null_labels: false
     interpolation: step
     x_axis_scale: auto
-    point_style: none    
+    point_style: none
     
-  - name: add_a_unique_name_777
+  - name: add_a_unique_name_780
     title: "Applications by Credit Score and Purpose"
     type: looker_donut_multiples
     model: lending_club
@@ -305,8 +305,8 @@
     dimensions: [listings.purpose, applicant.fico_low_tier]
     pivots: [listings.purpose]
     measures: [listings.count]
-    sorts: [listings.grade, listings.purpose, listings.count desc 0]
-    limit: 500
+    sorts: [listings.purpose, applicant.fico_low_tier desc]
+    limit: 24
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
@@ -316,13 +316,13 @@
       loan_amount: listings.loan_amount
       grade: listings.grade
       purpose: listings.purpose
-      interest_rate: listings.interest_rate     
+      interest_rate: listings.interest_rate
+    total: false
     show_null_labels: false
     colors: ["#651F81","#EF7F0F","#555E61","#2DA7CE"]
-    limit: 24
+    charts_across: 3
     width: 6
     height: 4
-    charts_across: 3
     
       
   
