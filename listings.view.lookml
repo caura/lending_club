@@ -66,11 +66,12 @@
     sql: ${TABLE}."intRate"
     
 #does this field exist?
-  - dimension: number_of_investors
-    type: number
-    sql: ${TABLE}."investorCount"
+#   - dimension: number_of_investors
+#     type: number
+#     sql: ${TABLE}."investorCount"
 
   - dimension_group: listed
+    label: "DATE"
     type: time
     timeframes: [time, date, week, month, hod, dow]
     sql: ${TABLE}."listD"
@@ -428,7 +429,7 @@
   - measure: count
     type: count
     drill_fields: default*
-    format: "$%d"
+    format: "%d"
     
   - measure: total_funded_amount
     type: sum
@@ -462,10 +463,11 @@
     sql: ${interest_rate}
     
   - measure: average_term
+    label: "DEBT TO INCOME"
     description: "number of months"
     type: average
     format: "%0.1f"
-    sql: ${term}
+    sql: ${term}/10
     
 ###########################################################    
 ### APPLICANT
@@ -475,6 +477,13 @@
     type: average
     format: "$%d"
     sql: ${applicant.annual_income}
+    
+  - measure: applicant.average_expected_default_rate
+    type: average
+    decimals: 2
+    format: "%0.1f%"
+    sql: ${applicant.expected_default_rate}
+    
     
 
   # ----- Detail ------
