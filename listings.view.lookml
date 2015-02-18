@@ -23,6 +23,10 @@
     timeframes: [time, date, week, month]
     sql: ${TABLE}."as_of_date"
     
+  - measure: count_distinct_uploads
+    type: count_distinct
+    sql: ${as_of_time}
+    
   - dimension_group: expired
     type: time
     timeframes: [time, date, week, month]
