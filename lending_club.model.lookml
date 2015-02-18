@@ -1,4 +1,4 @@
-- connection: segah_test
+- connection: verticalooker
 
 - scoping: true                  # for backward compatibility
 - include: "*.view.lookml"       # include all the views

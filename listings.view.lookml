@@ -33,12 +33,13 @@
     sql: ${TABLE}."fundedAmount"
 
   - dimension: grade
+    hidden: true
     suggestions: [A,B,C,D,E,F,G]
     sql: ${TABLE}."grade"
     
   - dimension: grade_linked
-    label: "GRADE"
-    sql: ${TABLE}."grade"
+    label: "Grade"
+    sql: ${grade}
     html: |
       {{ linked_value }}
       <a href="/dashboards/lending_club/historical_perfomance?grade={{ value | encode_uri }}" target="_new">
