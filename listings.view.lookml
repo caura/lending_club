@@ -15,8 +15,18 @@
 
   - dimension_group: accepted
     type: time
-    timeframes: [hod, time, date, week, month, dow]
+    timeframes: [hour_of_day, time, date, week, month, dow]
     sql: ${TABLE}."acceptD"
+  
+  - dimension:  accepted_hour_of_day_int
+    hidden: true
+    sql: ${accepted_hour_of_day}::int
+    
+  - dimension: accepted_hod
+    type: int
+    sql: ${accepted_hour_of_day}
+    order_by_field: accepted_hour_of_day_int
+    
 
   - dimension_group: as_of
     type: time
