@@ -8,6 +8,29 @@
 ### LISTINGS
 ###########################################################  
 
+
+  - measure: expected_weighted_annual_profitability
+    type: number
+    format: "%0.1f%"
+    sql: SUM(${expected_profitability} * ${loan_amount}) / ${total_loan_amount}
+
+  - dimension: expected_profitability
+    type: number
+    format: "%0.1f%"
+    sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
+
+  - dimension: is_bad
+    type: yesno
+    sql: |
+      EXP(20.4681692 + -0.0358713*${applicant.fico_range_high} + 0.0008713*${applicant.fico_range_low} 
+      + 0.0187961*${applicant.pub_rec_bankruptcies} + -0.0059923*${applicant.revol_utilization} 
+      + -0.2145666*${applicant.inquiries_last_6mths} + -0.1935067*${applicant.is_rent})
+
+  - dimension: applicant.is_rent
+    type: yesno
+    hidden: true
+    sql: CASE WHEN (${applicant.home_ownership} = 'RENT') THEN 1 ELSE 0 END
+
   - dimension: id
     primary_key: true
     type: int
@@ -25,7 +48,7 @@
   - dimension: accepted_hod
     type: int
     sql: ${accepted_hour_of_day}
-    order_by_field: accepted_hour_of_day_int
+#     order_by_field: accepted_hour_of_day_int
     
 
   - dimension_group: as_of
@@ -202,6 +225,7 @@
 
   - dimension: applicant.expected_default_rate
     type: number
+    format: "%0.2f%"
     sql: ${TABLE}."expDefaultRate"
 
   - dimension: applicant.fico_range_high

@@ -55,6 +55,29 @@
 
   elements:
   
+  - name: add_a_unique_name_510
+    title: "Expected Profitability"
+    type: single_value
+    model: lending_club
+    explore: listings
+    listen:
+      annual_income: applicant.annual_income
+      address_state: applicant.address_state
+      emp_length: applicant.emp_length
+      is_income_verified: applicant.is_income_verified      
+      date: listings.listed_date
+      loan_amount: listings.loan_amount
+      grade: listings.grade
+      purpose: listings.purpose
+      interest_rate: listings.interest_rate 
+    measures: [listings.expected_weighted_annual_profitability]
+    sorts: [listings.expected_weighted_annual_profitability desc]
+    limit: 500
+    total: false
+    width: 3
+    height: 2
+    font_size: medium
+  
   - name: add_a_unique_name_462
     title: "New Loan Listings"
     type: single_value
@@ -73,7 +96,7 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 4
+    width: 3
     height: 2
     
   - name: add_a_unique_name_523
@@ -93,7 +116,7 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 4
+    width: 3
     height: 2   
     
   - name: add_a_unique_name_524
@@ -113,7 +136,7 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 4
+    width: 3
     height: 2    
 
   - name: add_a_unique_name_793
