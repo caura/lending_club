@@ -74,9 +74,9 @@
     sorts: [listings.expected_weighted_annual_profitability desc]
     limit: 500
     total: false
-    width: 3
+    width: 2
     height: 2
-    font_size: medium
+    font_size: small
   
   - name: add_a_unique_name_462
     title: "New Loan Listings"
@@ -96,8 +96,9 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 3
+    width: 2
     height: 2
+    font_size: small
     
   - name: add_a_unique_name_523
     title: "Total Amount Applied for"
@@ -116,7 +117,7 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 3
+    width: 4
     height: 2   
     
   - name: add_a_unique_name_524
@@ -136,7 +137,7 @@
       grade: listings.grade
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
-    width: 3
+    width: 4
     height: 2    
 
   - name: add_a_unique_name_793
