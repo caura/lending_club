@@ -20,7 +20,8 @@
     sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
 
   - dimension: is_bad
-    type: yesno
+    description: 'probability'
+    type: number
     sql: |
       EXP(20.4681692 + -0.0358713*${applicant.fico_range_high} + 0.0008713*${applicant.fico_range_low} 
       + 0.0187961*${applicant.pub_rec_bankruptcies} + -0.0059923*${applicant.revol_utilization} 
