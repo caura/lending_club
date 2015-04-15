@@ -22,6 +22,7 @@
   - dimension: is_bad
     description: 'probability'
     type: number
+    decimals: 2
     sql: |
       EXP(20.4681692 + -0.0358713*${applicant.fico_range_high} + 0.0008713*${applicant.fico_range_low} 
       + 0.0187961*${applicant.pub_rec_bankruptcies} + -0.0059923*${applicant.revol_utilization} 
