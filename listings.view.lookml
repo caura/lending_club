@@ -13,6 +13,7 @@
     type: number
     format: "%0.1f%"
     sql: SUM(${expected_profitability} * ${loan_amount}) / ${total_loan_amount}
+    drill_fields: [id,interest_rate,listed_date,is_bad,expected_profitability]
 
   - dimension: expected_profitability
     type: number
@@ -20,7 +21,7 @@
     sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
 
   - dimension: is_bad
-    description: 'probability'
+    label: 'Prob(Default)'
     type: number
     decimals: 2
     sql: |
