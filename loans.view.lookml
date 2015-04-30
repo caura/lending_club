@@ -98,6 +98,27 @@
 
   - dimension: loan_status
     sql: ${TABLE}.loan_status
+    
+  - dimension: is_bad
+    sql: |
+      CASE 
+      WHEN ${loan_status} IN ('Late (16-30 days)', 'Late (31-120 days)', 'Default', 'Charged Off')
+        THEN 1
+      WHEN ${loan_status} = ''
+        THEN NULL
+      ELSE 0
+      END
+      
+  - dimension: is_rent
+    sql: |
+      CASE 
+      WHEN ${borrower.home_ownership} = 'RENT' THEN 1
+      ELSE 0
+      END
+      
+  - dimension: borrower.revol_utilization
+    type: number
+    sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float      
 
   - dimension_group: next_payment
     description: "Next scheduled payment date"
@@ -237,11 +258,17 @@
   - dimension: borrower.fico_high_tier
     type: tier
     tiers: [450,550,650,750,850]
+    sql: ${borrower.fico_range_high}
+    
+  - dimension: borrower.fico_range_high
     sql: ${TABLE}.fico_range_high
     
   - dimension: borrower.fico_low_tier
     type: tier
     tiers: [450,550,650,750,850]
+    sql: ${fico_range_low}
+    
+  - dimension: borrower.fico_range_low
     sql: ${TABLE}.fico_range_low
     
   - dimension: borrower.accounts_delinquent
@@ -321,11 +348,6 @@
     description: "Total credit revolving balance"
     type: int
     sql: ${TABLE}.revol_bal
-
-  - dimension: borrower.revol_utilization
-    hidden: true
-    type: number
-    sql: trim(trailing '%' from trim(${TABLE}.revol_util))::float
     
   - dimension: borrower.revol_util_tier
     type: tier
@@ -438,7 +460,7 @@
     sql: ${TABLE}.total_il_high_credit_limit::int
 
   - dimension: borrower.home_ownership
-    sql: ${TABLE}.home_ownership    
+    sql: ${TABLE}.home_ownership   
 
   - dimension: borrower.num_accts_ever_120_pd
     label: "BORROWER Number of Accounts Past Due 120"

@@ -112,7 +112,6 @@
 #     sql: ${TABLE}."investorCount"
 
   - dimension_group: listed
-    label: "DATE"
     type: time
     timeframes: [time, date, week, month, hod, dow]
     sql: ${TABLE}."listD"
