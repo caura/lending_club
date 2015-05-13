@@ -7,10 +7,12 @@
 
 
 - explore: rejects
+  persist_for: 4 hours
   conditionally_filter:
     application_date: after 2014
 
 - explore: loans
+  persist_for: 4 hours
   conditionally_filter:
     issue_date: after 2014
     unless:
@@ -26,7 +28,7 @@
     - fiscal_yyyyq
     
 - explore: listings
-  persist_for: 10 minutes
+  persist_for: 4 hours
   joins:
     - join: distributions
       sql_on: ${applicant.id} = ${distributions.uid}
