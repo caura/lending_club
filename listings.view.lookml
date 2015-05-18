@@ -388,8 +388,22 @@
     type: number
     sql: ${TABLE}."pubRecBankruptcies"
 
-  - dimension: purpose
+  - dimension: purpose_raw
     sql: ${TABLE}."purpose"
+    
+  - dimension: purpose
+    sql:
+      CASE
+      WHEN ${purpose_raw} IN (
+          'debt_consolidation'
+          , 'home_improvement'
+          , 'credit_card'
+          , 'small_business'
+          , 'major_purchase'
+          )
+      THEN ${purpose_raw}
+      ELSE 'other'
+      END
 
   - dimension: review_status
     sql: ${TABLE}."reviewStatus"
