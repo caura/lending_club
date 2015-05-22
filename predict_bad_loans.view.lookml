@@ -2,14 +2,13 @@
   derived_table:
     sql: |
       SELECT 
-        listings."id" AS listing_id
+        "id" AS listing_id
         , GlmPredict(
             "loans.issue_year","loans.is_rent",
             "borrower.revol_utilization","borrower.fico_range_high",
-            "borrower.fico_range_low","borrower.inquiries_last_6mths",
-            "borrower.pub_rec_bankruptcies"
+            "borrower.inquiries_last_6mths","borrower.pub_rec_bankruptcies"
       USING PARAMETERS model='dbadmin/glmLoans' ,TYPE='response') AS is_bad_probability
-      FROM listings
+      FROM listings_to_loans
 
   fields:
 #     Define your dimensions and measures here, like this:

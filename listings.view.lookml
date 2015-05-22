@@ -30,8 +30,7 @@
       + -0.2145666*${applicant.inquiries_last_6mths} + -0.1935067*${applicant.is_rent})
 
   - dimension: applicant.is_rent
-    type: yesno
-    hidden: true
+    type: number
     sql: CASE WHEN (${applicant.home_ownership} = 'RENT') THEN 1 ELSE 0 END
 
   - dimension: id
@@ -113,7 +112,7 @@
 
   - dimension_group: listed
     type: time
-    timeframes: [time, date, week, month, hod, dow]
+    timeframes: [time, date, week, month, hod, dow, year]
     sql: ${TABLE}."listD"
 
   - dimension: loan_amount
