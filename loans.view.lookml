@@ -51,7 +51,7 @@
   - dimension: interest_rate
     description: "Interest Rate on the loan"
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: trim(trailing '%' from trim(${TABLE}.int_rate))::float
 
   - dimension_group: issue
@@ -148,7 +148,7 @@
     label: "Percent Never Delinquent"
     description: "Percent of trades never delinquent"
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${TABLE}.pct_tl_nvr_dlq
 
   - dimension: policy_code
@@ -196,7 +196,7 @@
   - dimension: total_rec_int
     label: "Total Received Interest"
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${TABLE}.total_rec_int
 
   - dimension: total_rec_late_fee
@@ -311,7 +311,7 @@
   - dimension: borrower.bc_util
     description: "Ratio of total current balance to high credit/credit limit for all bankcard accounts"
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: trim(trailing '%' from trim(${TABLE}.bc_util))::float
     
   - dimension: borrower.bc_util_tier
@@ -450,13 +450,13 @@
   - dimension: borrower.bc_limit
     description: "Total bankcard high credit/credit limit"
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${TABLE}.total_bc_limit::int
 
   - dimension: borrower.installment_high_credit_limit
     description: "Total installment high credit/credit limit"
     type: number
-    format: "$%d"  
+    value_format: '$#,##0.00'  
     sql: ${TABLE}.total_il_high_credit_limit::int
 
   - dimension: borrower.home_ownership
@@ -551,7 +551,7 @@
   
 #   - measure: nar
 #     type: number
-#     format: "%0.2f%"
+#     value_format: '0.00\%'
 #     sql: (POWER(1 + ${sum_of_returns} / NULLIF(${total_outstanding_principal_inv},0),12.0) - 1) * 100.0
     
   - measure: count
@@ -570,42 +570,42 @@
     
   - measure: percent_verified
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: 100.0 * ${verified_loans} / NULLIF(${count},null)
     
   - measure: total_loan_amount
     type: sum
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${loan_amount}
     
   - measure: total_funded_amount
     type: sum
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${funded_amount}
       
   - measure: _total_loan_amount      
     hidden: true
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${total_loan_amount}
     html: |
       <font size="7">{{ rendered_value }}</font>      
     
   - measure: average_int_rate
     type: average
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${interest_rate}
     
 
   - measure: sum_recoveries
     type: sum
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: (${total_rec_int} + ${total_rec_late_fee}) + (${recoveries} - ${collection_recovery_fee})
     
   - measure: _sum_recoveries
     hidden: true
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${sum_recoveries}
     html: |
       <font size="7">{{ rendered_value }}</font>     
@@ -616,28 +616,28 @@
 
   - measure: borrower.bc_util_average
     type: average
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${borrower.bc_util}
     
   - measure: borrower.revol_util_average
     type: sum
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${borrower.revol_utilization}
     
   - measure: borrower.average_bc_limit
     type: average
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${borrower.bc_limit}
   
   - measure: borrower.average_il_high_credit_limit
     type: average
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${borrower.installment_high_credit_limit}
     
   - measure: borrower.average_revol_utilization
     type: average
     description: "Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit"
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql:  ${borrower.revol_utilization}
     
     

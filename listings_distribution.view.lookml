@@ -71,7 +71,7 @@
 
   - dimension: income_quartile_bucket
     type: number
-    format: "%d%"
+    value_format: '#\%'
     sql: |
       CASE
         WHEN ${TABLE}.accum_metric_pct <= .25
@@ -91,7 +91,7 @@
   - dimension: income_decile_bucket
     label: "Income Percentile"
     type: number
-    format: "%d%"
+    value_format: '#\%'
     sql: CEIL(${TABLE}.accum_metric_pct*10)*10
     
   - dimension: my_count

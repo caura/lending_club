@@ -11,13 +11,13 @@
 
   - measure: expected_weighted_annual_profitability
     type: number
-    format: "%0.1f%"
+    value_format: '0.0\%' 
     sql: SUM(${expected_profitability} * ${loan_amount}) / ${total_loan_amount}
     drill_fields: [id,interest_rate,listed_date,is_bad,expected_profitability]
 
   - dimension: expected_profitability
     type: number
-    format: "%0.1f%"
+    value_format: '0.0\%' 
     sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
 
   - dimension: is_bad
@@ -102,7 +102,7 @@
 
   - dimension: interest_rate
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${TABLE}."intRate"
     
 #does this field exist?
@@ -226,7 +226,7 @@
 
   - dimension: applicant.expected_default_rate
     type: number
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${TABLE}."expDefaultRate"
 
   - dimension: applicant.fico_range_high
@@ -483,22 +483,21 @@
   - measure: count
     type: count
     drill_fields: default*
-    format: "%d"
     
   - measure: total_funded_amount
     type: sum
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${funded_amount}
     
   - measure: total_loan_amount
     type: sum
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${loan_amount}
     
   - measure: _total_funded_amount    
     hidden: true
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${total_funded_amount}
     html: |
       <font size="7">{{ rendered_value }}</font>    
@@ -506,21 +505,21 @@
   - measure: _total_loan_amount    
     hidden: true
     type: number
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${total_loan_amount}
     html: |
       <font size="7">{{ rendered_value }}</font>     
     
   - measure: average_interest_rate
     type: average
-    format: "%0.2f%"
+    value_format: '0.00\%'
     sql: ${interest_rate}
     
   - measure: average_term
     label: "Debt to Income"
     description: "number of months"
     type: average
-    format: "%0.1f"
+    decimals: 1
     sql: ${term}/10
     
 ###########################################################    
@@ -529,13 +528,13 @@
 
   - measure: applicant.average_income
     type: average
-    format: "$%d"
+    value_format: '$#,##0.00'
     sql: ${applicant.annual_income}
     
   - measure: applicant.average_expected_default_rate
     type: average
     decimals: 2
-    format: "%0.1f%"
+    value_format: '0.0\%' 
     sql: ${applicant.expected_default_rate}
     
     
@@ -551,4 +550,3 @@
       - term
       - interest_rate
       - purpose
-

@@ -32,6 +32,7 @@
   joins:
     - join: distributions
       sql_on: ${applicant.id} = ${distributions.uid}
+      relationship: many_to_one
       
 - explore: suggest_listings
   from: listings

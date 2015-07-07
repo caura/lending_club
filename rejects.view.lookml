@@ -45,7 +45,7 @@
   - measure: average_amount
     type: average
     sql: ${amount_requested}
-    format: "$%0.2f"
+    value_format: '$#,##0.00'
   
   
   
