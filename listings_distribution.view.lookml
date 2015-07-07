@@ -26,7 +26,7 @@
           AND
           {% condition purpose %} a."purpose" {% endcondition %}
           AND
-          {% condition intrest_rate %} a."intRate" {% endcondition %}
+          {% condition interest_rate %} a."intRate" {% endcondition %}
           AND
           {% condition annual_income %} a."annualInc" {% endcondition %}
       ) as b
@@ -58,7 +58,7 @@
     
   - filter: is_income_verified
     
-  - filter: intrest_rate
+  - filter: interest_rate
     type: number
     
   - filter: date
@@ -89,7 +89,7 @@
     sql: ${TABLE}.accum_metric_pct
 
   - dimension: income_decile_bucket
-    label: "APPLICANT Income Percentile"
+    label: "Income Percentile"
     type: number
     format: "%d%"
     sql: CEIL(${TABLE}.accum_metric_pct*10)*10

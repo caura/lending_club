@@ -12,9 +12,9 @@
     
   - name: address_state
     title: "State"
-    type: suggest_filter
+    type: field_filter
     explore: suggest_listings
-    dimension: applicant.address_state
+    field: applicant.address_state
 
   - name: annual_income
     title: "Income"
@@ -27,9 +27,9 @@
     
   - name: grade
     title: "Grade"
-    type: suggest_filter
+    type: field_filter
     explore: listings
-    dimension: listings.grade
+    field: listings.grade
     
 #   - name: emp_length
 #     title: "Employment Length"
@@ -39,15 +39,15 @@
 
   - name: purpose
     title: "Loan Purpose"
-    type: suggest_filter
+    type: field_filter
     explore: suggest_listings
-    dimension: suggest_listings.purpose
+    field: suggest_listings.purpose
     
   - name: is_income_verified
     title: "Inc Verification"
-    type: suggest_filter
+    type: field_filter
     explore: listings
-    dimension: applicant.is_income_verified
+    field: applicant.is_income_verified
     
   - name: interest_rate
     title: "Interest Rate"
@@ -63,7 +63,7 @@
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
@@ -89,7 +89,7 @@
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
@@ -105,12 +105,12 @@
     type: single_value
     model: lending_club
     explore: listings
-    measures: [listings._total_loan_amount]
+    measures: [listings.total_loan_amount]
     limit: 500
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
@@ -118,19 +118,20 @@
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
     width: 4
-    height: 2   
+    height: 2  
+    font_size: small
     
   - name: add_a_unique_name_524
     title: "Total Amount Funded"
     type: single_value
     model: lending_club
     explore: listings
-    measures: [listings._total_funded_amount]
+    measures: [listings.total_funded_amount]
     limit: 500
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
@@ -138,7 +139,8 @@
       purpose: listings.purpose
       interest_rate: listings.interest_rate       
     width: 4
-    height: 2    
+    height: 2 
+    font_size: small
 
   - name: add_a_unique_name_793
     title: "Loan Applications by Accepted Hour (last 3 days)"
@@ -153,7 +155,7 @@
       address_state: applicant.address_state
       loan_amount: listings.loan_amount
       grade: listings.grade
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
       interest_rate: listings.interest_rate      
@@ -165,6 +167,7 @@
     colors: ['#2E6EC2']
     stacking: ''
     x_axis_scale: auto
+    hide_legend: yes
     
   - name: add_a_unique_name_233
     title: "Loan Applications by State"
@@ -181,7 +184,7 @@
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
       interest_rate: listings.interest_rate
@@ -194,7 +197,7 @@
   - name: loans_by_amount_type
     title: "Loans by Amount Sum"
     type: looker_area
-    base_view: listings
+    explore: listings
     dimensions: [listings.listed_date,listings.loan_amount_tiers]
     pivots: [listings.loan_amount_tiers]
     measures: [listings.count]
@@ -204,7 +207,7 @@
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
       interest_rate: listings.interest_rate
@@ -227,7 +230,7 @@
     colors: ["#651F81", "#80237D", "#C488DD", "#Ef7F0F", "#FEAC47", "#8ED1ED"]
     x_axis_datetime: yes
     hide_points: yes
-    hide_legend: yes
+#     hide_legend: yes
     
     
   - name: add_a_unique_name_62
@@ -245,12 +248,13 @@
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       purpose: listings.purpose
       is_income_verified: applicant.is_income_verified
       interest_rate: listings.interest_rate
     limit: 500
     show_null_labels: false
+    colors: ["#651F81", "#80237D", "#C488DD", "#Ef7F0F", "#FEAC47", "#8ED1ED"]
     stacking: ''
     x_axis_scale: auto
 
@@ -266,7 +270,7 @@
     listen:
       annual_income: distributions.annual_income
       address_state: distributions.address_state
-      emp_length: distributions.emp_length
+#       emp_length: distributions.emp_length
       is_income_verified: distributions.is_income_verified      
       date: distributions.date
       loan_amount: distributions.loan_amount
@@ -281,6 +285,7 @@
     point_style: none
     interpolation: linear
     height: 3
+    colors: ["#651F81", "#80237D", "#C488DD", "#Ef7F0F", "#FEAC47", "#8ED1ED"]
     
   - name: add_a_unique_name_562
     title: "Grade"
@@ -307,7 +312,7 @@
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
@@ -320,6 +325,7 @@
     interpolation: step
     x_axis_scale: auto
     point_style: none
+    colors: ["#651F81", "#80237D", "#C488DD", "#Ef7F0F", "#FEAC47", "#8ED1ED"]
     
   - name: add_a_unique_name_780
     title: "Applications by Credit Score and Purpose"
@@ -334,7 +340,7 @@
     listen:
       annual_income: applicant.annual_income
       address_state: applicant.address_state
-      emp_length: applicant.emp_length
+#       emp_length: applicant.emp_length
       is_income_verified: applicant.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount

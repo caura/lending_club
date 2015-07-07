@@ -266,7 +266,7 @@
   - dimension: borrower.fico_low_tier
     type: tier
     tiers: [450,550,650,750,850]
-    sql: ${fico_range_low}
+    sql: ${borrower.fico_range_low}
     
   - dimension: borrower.fico_range_low
     sql: ${TABLE}.fico_range_low
@@ -463,7 +463,7 @@
     sql: ${TABLE}.home_ownership   
 
   - dimension: borrower.num_accts_ever_120_pd
-    label: "BORROWER Number of Accounts Past Due 120"
+    label: "Number of Accounts Past Due 120"
     description: "Number of accounts ever 120 or more days past due"
     sql: ${TABLE}.num_accts_ever_120_pd
 

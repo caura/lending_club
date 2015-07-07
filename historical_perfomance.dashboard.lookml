@@ -12,9 +12,9 @@
     
   - name: address_state
     title: "State"
-    type: suggest_filter
+    type: field_filter
     explore: loans
-    dimension: borrower.address_state
+    field: borrower.address_state
 
   - name: annual_income
     title: "Income"
@@ -27,27 +27,27 @@
     
   - name: grade
     title: "Grade"
-    type: suggest_filter
+    type: field_filter
     explore: loans
-    dimension: loans.grade
+    field: loans.grade
     
   - name: emp_length
     title: "Employment Length"
-    type: suggest_filter
+    type: field_filter
     explore: loans
-    dimension: borrower.emp_length
+    field: borrower.emp_length
 
   - name: purpose
     title: "Loan Purpose"
-    type: suggest_filter
+    type: field_filter
     explore: loans
-    dimension: loans.purpose
+    field: loans.purpose
     
   - name: is_income_verified
     title: "Inc Verification"
-    type: suggest_filter
+    type: field_filter
     explore: loans
-    dimension: borrower.is_income_verified
+    field: borrower.is_income_verified
     
   - name: interest_rate
     title: "Interest Rate"
@@ -58,6 +58,7 @@
   - name: add_a_unique_name_462
     title: "Issed Loans"
     type: single_value
+    font_size: medium
     model: lending_club
     explore: loans
     measures: [loans.count]
@@ -75,13 +76,15 @@
       interest_rate: loans.interest_rate       
     width: 4
     height: 2
+    font_size: small
     
   - name: add_a_unique_name_523
     title: "Total Principal"
+    font_size: medium
     type: single_value
     model: lending_club
     explore: loans
-    measures: [loans._total_loan_amount]
+    measures: [loans.total_loan_amount]
     limit: 500
     listen:
       annual_income: borrower.annual_income
@@ -95,13 +98,15 @@
       interest_rate: loans.interest_rate       
     width: 4
     height: 2
+    font_size: small
     
   - name: add_a_unique_name_25
     title: "Total Recoveries"
+    font_size: medium
     type: single_value
     model: lending_club
     explore: loans
-    measures: [loans._sum_recoveries]
+    measures: [loans.sum_recoveries]
     listen:
       annual_income: borrower.annual_income
       address_state: borrower.address_state
@@ -117,6 +122,7 @@
     show_null_labels: false
     width: 4
     height: 2
+    font_size: small
     
   - name: add_a_unique_name_350
     title: "Total Loans and Lent Amount by Loan Status"
@@ -141,7 +147,7 @@
   - name: loans_by_amount_type
     title: "Loans by Amount Sum"
     type: looker_area
-    base_view: loans
+    explore: loans
     dimensions: [loans.issue_week,loans.loan_amount_tiers]
     pivots: [loans.loan_amount_tiers]
     measures: [loans.count]

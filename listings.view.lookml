@@ -40,7 +40,7 @@
 
   - dimension_group: accepted
     type: time
-    timeframes: [hour_of_day, time, date, week, month, dow]
+    timeframes: [hour_of_day, time, date, week, month, day_of_week]
     sql: ${TABLE}."acceptD"
   
   - dimension:  accepted_hour_of_day_int
@@ -112,7 +112,7 @@
 
   - dimension_group: listed
     type: time
-    timeframes: [time, date, week, month, hod, dow, year]
+    timeframes: [time, date, week, month, hour_of_day, day_of_week, year]
     sql: ${TABLE}."listD"
 
   - dimension: loan_amount
@@ -311,7 +311,7 @@
     sql: ${TABLE}."mthsSinceRecentRevolDelinq"
 
   - dimension: applicant.num_accts_ever_120_pd
-    label: "APPLICANT Number of Accounts Past Due 120"
+    label: "Number of Accounts Past Due 120"
     type: number
     sql: ${TABLE}."numAcctsEver120Ppd"
 
@@ -517,7 +517,7 @@
     sql: ${interest_rate}
     
   - measure: average_term
-    label: "DEBT TO INCOME"
+    label: "Debt to Income"
     description: "number of months"
     type: average
     format: "%0.1f"
