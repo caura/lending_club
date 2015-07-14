@@ -61,10 +61,10 @@
     model: lending_club
     explore: listings
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
@@ -87,10 +87,10 @@
     sorts: [listings.count desc]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
@@ -108,10 +108,10 @@
     measures: [listings.total_loan_amount]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
@@ -129,10 +129,10 @@
     measures: [listings.total_funded_amount]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
@@ -151,13 +151,13 @@
     pivots: [listings.accepted_hod]
     measures: [listings.count]
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
       loan_amount: listings.loan_amount
       grade: listings.grade
 #       emp_length: applicant.emp_length
       purpose: listings.purpose
-      is_income_verified: applicant.is_income_verified
+      is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate      
     filters:
       listings.listed_date: 3 days
@@ -174,19 +174,19 @@
     type: looker_geo_choropleth
     model: lending_club
     explore: listings
-    dimensions: [applicant.address_state]
+    dimensions: [listings.address_state]
     measures: [listings.count]
     sorts: [listings.listed_date desc, listings.count desc]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
 #       emp_length: applicant.emp_length
       purpose: listings.purpose
-      is_income_verified: applicant.is_income_verified
+      is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate
     quantize_colors: false
     colors: ["#efefef","#C488DD","#80237D","#651F81"]    
@@ -202,14 +202,14 @@
     pivots: [listings.loan_amount_tiers]
     measures: [listings.count]
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
 #       emp_length: applicant.emp_length
       purpose: listings.purpose
-      is_income_verified: applicant.is_income_verified
+      is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate
     sorts: [listings.count desc]
     limit: 500
@@ -238,19 +238,19 @@
     type: looker_column
     model: lending_club
     explore: listings
-    dimensions: [listings.grade, applicant.revol_util_tier]
-    pivots: [applicant.revol_util_tier]
+    dimensions: [listings.grade, listings.revol_util_tier]
+    pivots: [listings.revol_util_tier]
     measures: [listings.count]
     sorts: [listings.grade]
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
 #       emp_length: applicant.emp_length
       purpose: listings.purpose
-      is_income_verified: applicant.is_income_verified
+      is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate
     limit: 500
     show_null_labels: false
@@ -264,7 +264,7 @@
     model: lending_club
     explore: listings
     dimensions: [distributions.income_decile_bucket]
-    measures: [listings.count, applicant.average_income]
+    measures: [listings.count, listings.average_income]
     sorts: [distributions.income_decile_bucket asc]
     limit: 500
     listen:
@@ -310,10 +310,10 @@
     sorts: [listings.listed_week, listings.grade]
     limit: 500
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
@@ -332,16 +332,16 @@
     type: looker_donut_multiples
     model: lending_club
     explore: listings
-    dimensions: [listings.purpose, applicant.fico_low_tier]
+    dimensions: [listings.purpose, listings.fico_low_tier]
     pivots: [listings.purpose]
     measures: [listings.count]
-    sorts: [listings.purpose, applicant.fico_low_tier desc]
+    sorts: [listings.purpose, listings.fico_low_tier desc]
     limit: 24
     listen:
-      annual_income: applicant.annual_income
-      address_state: applicant.address_state
+      annual_income: listings.annual_income
+      address_state: listings.address_state
 #       emp_length: applicant.emp_length
-      is_income_verified: applicant.is_income_verified      
+      is_income_verified: listings.is_income_verified      
       date: listings.listed_date
       loan_amount: listings.loan_amount
       grade: listings.grade
