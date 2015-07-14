@@ -56,7 +56,7 @@
   elements:
   
   - name: add_a_unique_name_462
-    title: "Issed Loans"
+    title: "Issued Loans"
     type: single_value
     font_size: medium
     model: lending_club

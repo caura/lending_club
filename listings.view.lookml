@@ -28,7 +28,7 @@
     decimals: 2
     sql: |
       EXP(20.4681692 + -0.0358713*${fico_range_high} + 0.0008713*${fico_range_low} 
-      + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revol_utilization} 
+      + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
       + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
 
 #   - dimension: is_rent
@@ -166,32 +166,35 @@
     type: sum
     value_format: '$#,##0.00'
     sql: ${funded_amount}
+    drill_fields: default*
     
   - measure: total_loan_amount
     type: sum
     value_format: '$#,##0.00'
     sql: ${loan_amount}
+    drill_fields: default*
     
-  - measure: _total_funded_amount    
-    hidden: true
-    type: number
-    value_format: '$#,##0.00'
-    sql: ${total_funded_amount}
-    html: |
-      <font size="7">{{ rendered_value }}</font>    
-    
-  - measure: _total_loan_amount    
-    hidden: true
-    type: number
-    value_format: '$#,##0.00'
-    sql: ${total_loan_amount}
-    html: |
-      <font size="7">{{ rendered_value }}</font>     
+#   - measure: _total_funded_amount    
+#     hidden: true
+#     type: number
+#     value_format: '$#,##0.00'
+#     sql: ${total_funded_amount}
+#     html: |
+#       <font size="7">{{ rendered_value }}</font>    
+#     
+#   - measure: _total_loan_amount    
+#     hidden: true
+#     type: number
+#     value_format: '$#,##0.00'
+#     sql: ${total_loan_amount}
+#     html: |
+#       <font size="7">{{ rendered_value }}</font>     
     
   - measure: average_interest_rate
     type: average
     value_format: '0.00\%'
     sql: ${interest_rate}
+    drill_fields: default*
     
   - measure: average_term
     label: "Debt to Income"
@@ -199,11 +202,7 @@
     type: average
     decimals: 1
     sql: ${term}/10
-    
-###########################################################    
-### APPLICANT
-###########################################################  
-
+    drill_fields: default*
 
     
     
@@ -211,7 +210,6 @@
   # ----- Detail ------
   sets:
     default:
-      - id
       - id
       - emp_length
       - funded_amount

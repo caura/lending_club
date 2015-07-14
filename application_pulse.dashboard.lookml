@@ -264,7 +264,7 @@
     model: lending_club
     explore: listings
     dimensions: [distributions.income_decile_bucket]
-    measures: [listings.count, listings.average_income]
+    measures: [listings.count, listings.average_annual_income]
     sorts: [distributions.income_decile_bucket asc]
     limit: 500
     listen:
