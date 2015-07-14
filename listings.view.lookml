@@ -54,7 +54,6 @@
     sql: ${accepted_hour_of_day}
 #     order_by_field: accepted_hour_of_day_int
     
-
   - dimension_group: as_of
     type: time
     timeframes: [time, date, week, month]
@@ -90,6 +89,7 @@
     sql: ${TABLE}."desc"
     
   - dimension_group: ils_expiration
+    hidden: true
     description: "wholeloan platform expiration date"
     type: time
     timeframes: [time, date, week, month]
@@ -127,13 +127,13 @@
     sql: ${loan_amount}   
 
   - dimension: looker_is_pull_all
+    hidden: true
     description: "Was this update on the latest listed or a pull of all currently listed"
     type: yesno
     sql: ${TABLE}."looker_is_pull_all"   
     
   - dimension: review_status
     sql: ${TABLE}."reviewStatus"
-    
 
   - dimension_group: review_status
     type: time
@@ -141,6 +141,7 @@
     sql: ${TABLE}."reviewStatusD"
 
   - dimension: service_fee_rate
+    hidden: true
     type: number
     sql: ${TABLE}."serviceFeeRate"
 
@@ -165,7 +166,7 @@
   - measure: total_funded_amount
     type: sum
     value_format: '$#,##0.00'
-    sql: ${funded_amount}
+    sql: ${}
     drill_fields: default*
     
   - measure: total_loan_amount
@@ -197,6 +198,7 @@
     drill_fields: default*
     
   - measure: average_term
+    hidden: true
     label: "Debt to Income"
     description: "number of months"
     type: average

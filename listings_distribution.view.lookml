@@ -65,6 +65,7 @@
     type: datetime
   
   - dimension: uid
+    hidden: true
     type: number
     hidden: true
     sql: ${TABLE}.uid
@@ -84,6 +85,7 @@
       END
 
   - dimension: accum_metric_pct
+    hidden: true
     type: number
     decimals: 3
     sql: ${TABLE}.accum_metric_pct
@@ -94,5 +96,7 @@
     value_format: '#\%'
     sql: CEIL(${TABLE}.accum_metric_pct*10)*10
     
-  - dimension: my_count
+  - dimension: count
     sql: ${TABLE}.count
+    
+    

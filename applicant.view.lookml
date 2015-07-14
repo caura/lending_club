@@ -3,8 +3,8 @@
   fields:
   
   - dimension: is_rent
-    type: number
-    sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
+    type: yesno
+    sql: ${home_ownership} = 'RENT'
     view_label: Applicant
     
   - dimension: accounts_delinquent
@@ -14,6 +14,7 @@
     view_label: Applicant
 
   - dimension: accounts_past_24months
+    hidden: true
     description: "Number of trades opened in past 24 months."
     type: number
     sql: ${TABLE}."accOpenPast24Mths"
@@ -69,11 +70,13 @@
     view_label: Applicant
 
   - dimension: chargeoff_within_12_mths
+    hidden: true
     type: number
     sql: ${TABLE}."chargeoffWithin12Mths"
     view_label: Applicant
 
   - dimension: collections_12_mths_ex_med
+    hidden: true
     type: number
     sql: ${TABLE}."collections12MthsExMed"
     view_label: Applicant
@@ -85,11 +88,13 @@
     view_label: Applicant
     
   - dimension: delinq_2yrs
+    hidden: true
     type: number
     sql: ${TABLE}."delinq2Yrs"
     view_label: Applicant
     
   - dimension: delinquent_amount
+    hidden: true
     type: number
     sql: ${TABLE}."delinqAmnt"
     view_label: Applicant
@@ -126,11 +131,13 @@
     view_label: Applicant
 
   - dimension: fico_range_high
+    hidden: true
     type: number
     sql: ${TABLE}."ficoRangeHigh"
     view_label: Applicant
 
   - dimension: fico_range_low
+    hidden: true
     type: number
     sql: ${TABLE}."ficoRangeLow"
     view_label: Applicant
@@ -142,6 +149,7 @@
     view_label: Applicant
     
   - dimension: fico_low_tier
+    hidden: true
     type: tier
     tiers: [600,750,900]
     sql: ${fico_range_low}
@@ -152,6 +160,7 @@
     view_label: Applicant
 
   - dimension: inquiries_last_6mths
+    hidden: true
     type: number
     sql: ${TABLE}."inqLast6Mths"
     view_label: Applicant
@@ -237,6 +246,7 @@
     view_label: Applicant
 
   - dimension: num_accts_ever_120_pd
+    hidden: true
     label: "Number of Accounts Past Due 120"
     type: number
     sql: ${TABLE}."numAcctsEver120Ppd"
@@ -321,6 +331,7 @@
     view_label: Applicant
 
   - dimension: open_account
+    hidden: true
     type: number
     sql: ${TABLE}."openAcc"
     view_label: Applicant
@@ -369,13 +380,14 @@
       END
     view_label: Applicant
     
-
   - dimension: revolving_balance
+    hidden: true
     type: number
     sql: ${TABLE}."revolBal"
     view_label: Applicant
 
   - dimension: revolving_utilization
+    hidden: true
     type: number
     sql: ${TABLE}."revolUtil"
     view_label: Applicant
@@ -387,6 +399,7 @@
     view_label: Applicant
 
   - dimension: tax_liens
+    hidden: true
     type: number
     sql: ${TABLE}."taxLiens"
     view_label: Applicant
@@ -433,6 +446,7 @@
     view_label: Applicant
 
   - dimension: total_rev_hi_lim
+    hidden: true
     description: "Total revolving high credit/credit limit"
     type: int
     sql: ${TABLE}."totalRevHiLim"
@@ -449,7 +463,6 @@
     sql: ${tot_coll_amt}
     value_format: '$#,##0.00'
     view_label: Applicant
-
     
   - measure: total_high_credit_limit
     type: sum

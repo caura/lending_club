@@ -13,7 +13,7 @@
   - name: address_state
     title: "State"
     type: field_filter
-    explore: loans
+    explore: borrower
     field: borrower.address_state
 
   - name: annual_income
@@ -31,11 +31,11 @@
     explore: loans
     field: loans.grade
     
-  - name: emp_length
+  - name: employment_length
     title: "Employment Length"
     type: field_filter
-    explore: loans
-    field: borrower.emp_length
+    explore: borrower
+    field: borrower.employment_length
 
   - name: purpose
     title: "Loan Purpose"
@@ -44,9 +44,9 @@
     field: loans.purpose
     
   - name: is_income_verified
-    title: "Inc Verification"
+    title: "Income Verification"
     type: field_filter
-    explore: loans
+    explore: borrower
     field: borrower.is_income_verified
     
   - name: interest_rate
@@ -65,10 +65,10 @@
     sorts: [loans.count desc]
     limit: 500
     listen:
-      annual_income: borrower.annual_income
-      address_state: borrower.address_state
-      emp_length: borrower.emp_length
-      is_income_verified: borrower.is_income_verified      
+      annual_income: loans.annual_income
+      address_state: loans.address_state
+      employment_length: loans.employment_length
+      is_income_verified: loans.is_income_verified      
       date: loans.issue_date
       loan_amount: loans.loan_amount
       grade: loans.grade
@@ -87,10 +87,10 @@
     measures: [loans.total_loan_amount]
     limit: 500
     listen:
-      annual_income: borrower.annual_income
-      address_state: borrower.address_state
-      emp_length: borrower.emp_length
-      is_income_verified: borrower.is_income_verified      
+      annual_income: loans.annual_income
+      address_state: loans.address_state
+      employment_length: loans.employment_length
+      is_income_verified: loans.is_income_verified      
       date: loans.issue_date
       loan_amount: loans.loan_amount
       grade: loans.grade
@@ -108,10 +108,10 @@
     explore: loans
     measures: [loans.sum_recoveries]
     listen:
-      annual_income: borrower.annual_income
-      address_state: borrower.address_state
-      emp_length: borrower.emp_length
-      is_income_verified: borrower.is_income_verified      
+      annual_income: loans.annual_income
+      address_state: loans.address_state
+      employment_length: loans.employment_length
+      is_income_verified: loans.is_income_verified      
       date: loans.issue_date
       loan_amount: loans.loan_amount
       grade: loans.grade
@@ -132,10 +132,10 @@
     dimensions: [loans.loan_status]
     measures: [loans.count, loans.total_loan_amount]
     listen:
-      annual_income: borrower.annual_income
-      address_state: borrower.address_state
-      emp_length: borrower.emp_length
-      is_income_verified: borrower.is_income_verified      
+      annual_income: loans.annual_income
+      address_state: loans.address_state
+      employment_length: loans.employment_length
+      is_income_verified: loans.is_income_verified      
       date: loans.issue_date
       loan_amount: loans.loan_amount
       grade: loans.grade
@@ -152,14 +152,14 @@
     pivots: [loans.loan_amount_tiers]
     measures: [loans.count]
     listen:
-      annual_income: borrower.annual_income
-      address_state: borrower.address_state
+      annual_income: loans.annual_income
+      address_state: loans.address_state
       date: loans.issue_date
       loan_amount: loans.loan_amount
       grade: loans.grade
-      emp_length: borrower.emp_length
+      employment_length: loans.employment_length
       purpose: loans.purpose
-      is_income_verified: borrower.is_income_verified
+      is_income_verified: loans.is_income_verified
       interest_rate: loans.interest_rate
     sorts: [loans.count desc]
     limit: 500

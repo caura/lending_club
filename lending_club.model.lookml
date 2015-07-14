@@ -16,12 +16,12 @@
   conditionally_filter:
     issue_date: after 2014
     unless:
-    - borrower.id
+    - borrower_id
     - id
     - accepted_date
     - last_payment_date
     - next_payment_date
-    - borrower.last_credit_pull_date
+    - last_credit_pull_date
     - expired_date
     - listed_date
     - issue_quarter
@@ -33,6 +33,9 @@
     - join: distributions
       sql_on: ${applicant_id} = ${distributions.uid}
       relationship: many_to_one
+      
+- explore: borrower
+  hidden: true
       
 - explore: suggest_listings
   from: listings
