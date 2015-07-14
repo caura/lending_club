@@ -14,7 +14,7 @@
     title: "State"
     type: field_filter
     explore: suggest_listings
-    field: applicant.address_state
+    field: address_state
 
   - name: annual_income
     title: "Income"
@@ -47,7 +47,7 @@
     title: "Inc Verification"
     type: field_filter
     explore: listings
-    field: applicant.is_income_verified
+    field: is_income_verified
     
   - name: interest_rate
     title: "Interest Rate"

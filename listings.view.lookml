@@ -3,6 +3,8 @@
 # https://www.lendingclub.com/developers/listed-loans.action
 #########################
 - view: listings
+  sql_table_name: listings
+  extends: [applicant]
   fields:
 ###########################################################    
 ### LISTINGS
@@ -25,15 +27,15 @@
     type: number
     decimals: 2
     sql: |
-      EXP(20.4681692 + -0.0358713*${applicant.fico_range_high} + 0.0008713*${applicant.fico_range_low} 
-      + 0.0187961*${applicant.pub_rec_bankruptcies} + -0.0059923*${applicant.revol_utilization} 
-      + -0.2145666*${applicant.inquiries_last_6mths} + -0.1935067*${applicant.is_rent})
+      EXP(20.4681692 + -0.0358713*${fico_range_high} + 0.0008713*${fico_range_low} 
+      + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revol_utilization} 
+      + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
 
-  - dimension: applicant.is_rent
-    type: number
-    sql: CASE WHEN (${applicant.home_ownership} = 'RENT') THEN 1 ELSE 0 END
+#   - dimension: is_rent
+#     type: number
+#     sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
 
-  - dimension: id
+  - dimension: applicant_id
     primary_key: true
     type: int
     sql: ${TABLE}."id"
@@ -129,301 +131,14 @@
     type: yesno
     sql: ${TABLE}."looker_is_pull_all"   
     
-###########################################################    
-### APPLICANT
-###########################################################    
-
-
-  - dimension: applicant.accounts_delinquent
-    description: "The number of accounts on which the applicant is now delinquent."
-    type: number
-    sql: ${TABLE}."accNowDelinq"
-
-  - dimension: applicant.accounts_past_24months
-    description: "Number of trades opened in past 24 months."
-    type: number
-    sql: ${TABLE}."accOpenPast24Mths"
-
-#DEPRECATED
-#   - dimension: applicant.address_city
-#     sql: ${TABLE}."addrCity"
-
-  - dimension: applicant.address_state
-    sql: ${TABLE}."addrState"
-
-  #currently not used (for future campability)
-  - dimension: applicant.address_zip
-    sql: ${TABLE}."addrZip"
-
-  - dimension: applicant.annual_income_tier
-    type: tier
-    tiers: [30000,50000,70000,90000,110000]
-    sql: ${applicant.annual_income}
-    
-#   - dimension: decile_income_bucket
-#     type: tier
-#     tiers: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-#     sql: ${distributions.income_accum_metric_pct}
-#     required_joins: [distributions]
-
-  - dimension: applicant.annual_income
-    type: number
-    sql: ${TABLE}."annualInc"
-
-  - dimension: applicant.average_current_balance
-    type: number
-    sql: ${TABLE}."avgCurBal"
-
-  - dimension: applicant.bc_open_to_buy
-    type: number
-    sql: ${TABLE}."bcOpenToBuy"
-
-  - dimension: applicant.bc_util
-    type: number
-    sql: ${TABLE}."bcUtil"
-
-  - dimension: applicant.chargeoff_within_12_mths
-    type: number
-    sql: ${TABLE}."chargeoffWithin12Mths"
-
-  - dimension: applicant.collections_12_mths_ex_med
-    type: number
-    sql: ${TABLE}."collections12MthsExMed"
-
-  - dimension_group: applicant.credit_pull
-    type: time
-    timeframes: [time, date, week, month]
-    sql: ${TABLE}."creditPullD"
-
-  - dimension: applicant.delinq_2yrs
-    type: number
-    sql: ${TABLE}."delinq2Yrs"
-
-  - dimension: applicant.delinquent_amount
-    type: number
-    sql: ${TABLE}."delinqAmnt"
-
-  - dimension: applicant.dti
-    type: number
-    sql: ${TABLE}."dti"
-
-  - dimension_group: applicant.earliest_cr_line
-    type: time
-    timeframes: [time, date, week, month]
-    sql: ${TABLE}."earliestCrLine"
-
-  - dimension: applicant.emp_length
-    sql: |
-      CASE
-        WHEN ${TABLE}."empLength" < 12 THEN '< 1 year'
-        WHEN ${TABLE}."empLength" = 12 THEN '1 year'
-        WHEN ${TABLE}."empLength" >= 120 THEN '10+ years'
-        ELSE floor(${TABLE}."empLength" / 12.0) || ' years'
-      END
-
-  - dimension: applicant.emp_title
-    sql: ${TABLE}."empTitle"
-
-  - dimension: applicant.expected_default_rate
-    type: number
-    value_format: '0.00\%'
-    sql: ${TABLE}."expDefaultRate"
-
-  - dimension: applicant.fico_range_high
-    type: number
-    sql: ${TABLE}."ficoRangeHigh"
-
-  - dimension: applicant.fico_range_low
-    type: number
-    sql: ${TABLE}."ficoRangeLow"
-    
-  - dimension: applicant.fico_high_tier
-    type: tier
-    tiers: [650,700,750,800,900]
-    sql: ${applicant.fico_range_high}
-    
-  - dimension: applicant.fico_low_tier
-    type: tier
-    tiers: [600,750,900]
-    sql: ${applicant.fico_range_low}    
-
-  - dimension: applicant.home_ownership
-    sql: ${TABLE}."homeOwnership"
-
-  - dimension: applicant.inquiries_last_6mths
-    type: number
-    sql: ${TABLE}."inqLast6Mths"
-
-  - dimension: applicant.is_income_verified
-    suggestions: [NOT_VERIFIED,SOURCE_VERIFIED,VERIFIED]
-    sql: ${TABLE}."isIncV"
-
-  - dimension: applicant.id
-    type: int
-    sql: ${TABLE}."memberId"
-
-  - dimension: applicant.mo_sin_old_il_acct
-    type: number
-    sql: ${TABLE}."moSinOldIlAcct"
-
-  - dimension: applicant.mo_sin_old_rev_tl_op
-    type: number
-    sql: ${TABLE}."moSinOldRevTlOp"
-
-  - dimension: applicant.mo_sin_rcnt_rev_tl_op
-    type: number
-    sql: ${TABLE}."moSinRcntRevTlOp"
-
-  - dimension: applicant.mo_sin_rcnt_tl
-    type: number
-    sql: ${TABLE}."moSinRcntTl"
-
-  - dimension: applicant.number_mortgage_accounts
-    type: number
-    sql: ${TABLE}."mortAcc"
-
-  - dimension: applicant.mths_since_last_delinq
-    type: number
-    sql: ${TABLE}."mthsSinceLastDelinq"
-
-  - dimension: applicant.mths_since_last_major_derog
-    type: number
-    sql: ${TABLE}."mthsSinceLastMajorDerog"
-
-  - dimension: applicant.mths_since_last_record
-    type: number
-    sql: ${TABLE}."mthsSinceLastRecord"
-
-  - dimension: applicant.mths_since_recent_bc
-    type: number
-    sql: ${TABLE}."mthsSinceRecentBc"
-
-  - dimension: applicant.mths_since_recent_bc_dlq
-    type: number
-    sql: ${TABLE}."mthsSinceRecentBcDlq"
-
-  - dimension: applicant.mths_since_recent_inq
-    type: number
-    sql: ${TABLE}."mthsSinceRecentInq"
-
-  - dimension: applicant.mths_since_recent_revol_delinq
-    type: number
-    sql: ${TABLE}."mthsSinceRecentRevolDelinq"
-
-  - dimension: applicant.num_accts_ever_120_pd
-    label: "Number of Accounts Past Due 120"
-    type: number
-    sql: ${TABLE}."numAcctsEver120Ppd"
-
-  - dimension: applicant.num_actv_bc_tl
-    type: number
-    sql: ${TABLE}."numActvBcTl"
-
-  - dimension: applicant.num_actv_rev_tl
-    type: number
-    sql: ${TABLE}."numActvRevTl"
-
-  - dimension: applicant.num_bc_sats
-    type: number
-    sql: ${TABLE}."numBcSats"
-
-  - dimension: applicant.num_bc_tl
-    type: number
-    sql: ${TABLE}."numBcTl"
-
-  - dimension: applicant.num_il_tl
-    type: number
-    sql: ${TABLE}."numIlTl"
-
-  - dimension: applicant.num_op_rev_tl
-    type: number
-    sql: ${TABLE}."numOpRevTl"
-
-  - dimension: applicant.num_rev_accts
-    type: number
-    sql: ${TABLE}."numRevAccts"
-
-  - dimension: applicant.num_rev_tl_bal_gt_0
-    type: number
-    sql: ${TABLE}."numRevTlBalGt0"
-
-  - dimension: applicant.num_sats
-    type: number
-    sql: ${TABLE}."numSats"
-
-  - dimension: applicant.num_tl_120dpd_2m
-    type: number
-    sql: ${TABLE}."numTl120dpd2m"
-
-  - dimension: applicant.num_tl_30dpd
-    type: number
-    sql: ${TABLE}."numTl30dpd"
-
-  - dimension: applicant.num_tl_90g_dpd_24m
-    type: number
-    sql: ${TABLE}."numTl90gDpd24m"
-
-  - dimension: applicant.num_tl_op_past_12m
-    type: number
-    sql: ${TABLE}."numTlOpPast12m"
-
-  - dimension: applicant.open_acc
-    type: number
-    sql: ${TABLE}."openAcc"
-
-  - dimension: applicant.pct_tl_nvr_dlq
-    type: number
-    sql: ${TABLE}."pctTlNvrDlq"
-
-  - dimension: applicant.percent_bc_gt_75
-    type: number
-    sql: ${TABLE}."percentBcGt75"
-
-  - dimension: applicant.pub_rec
-    type: number
-    sql: ${TABLE}."pubRec"
-
-  - dimension: applicant.pub_rec_bankruptcies
-    type: number
-    sql: ${TABLE}."pubRecBankruptcies"
-
-  - dimension: purpose_raw
-    sql: ${TABLE}."purpose"
-    
-  - dimension: purpose
-    sql:
-      CASE
-      WHEN ${purpose_raw} IN (
-          'debt_consolidation'
-          , 'home_improvement'
-          , 'credit_card'
-          , 'small_business'
-          , 'major_purchase'
-          )
-      THEN ${purpose_raw}
-      ELSE 'other'
-      END
-
   - dimension: review_status
     sql: ${TABLE}."reviewStatus"
+    
 
   - dimension_group: review_status
     type: time
     timeframes: [time, date, week, month]
     sql: ${TABLE}."reviewStatusD"
-
-  - dimension: applicant.revol_bal
-    type: number
-    sql: ${TABLE}."revolBal"
-
-  - dimension: applicant.revol_utilization
-    type: number
-    sql: ${TABLE}."revolUtil"
-    
-  - dimension: applicant.revol_util_tier
-    type: tier
-    tiers: [20,40,60,80]
-    sql: ${applicant.revol_utilization}  
 
   - dimension: service_fee_rate
     type: number
@@ -432,47 +147,10 @@
   - dimension: sub_grade
     sql: ${TABLE}."subGrade"
 
-  - dimension: applicant.tax_liens
-    type: number
-    sql: ${TABLE}."taxLiens"
-
   - dimension: term
     type: number
     sql: ${TABLE}."term"
-
-  - dimension: applicant.tot_coll_amt
-    type: number
-    sql: ${TABLE}."totCollAmt"
-
-  - dimension: applicant.tot_cur_bal
-    type: number
-    sql: ${TABLE}."totCurBal"
-
-  - dimension: applicant.tot_hi_cred_lim
-    type: int
-    sql: ${TABLE}."totHiCredLim"
-
-  - dimension: applicant.total_accounts
-    type: number
-    sql: ${TABLE}."totalAcc"
-
-  - dimension: applicant.total_bal_ex_mort
-    type: number
-    sql: ${TABLE}."totalBalExMort"
-
-  - dimension: applicant.total_bc_limit
-    type: int
-    sql: ${TABLE}."totalBcLimit"::int
-
-  - dimension: applicant.installment_high_credit_limit
-    type: number
-    sql: ${TABLE}."totalIlHighCreditLimit"
-
-  - dimension: applicant.total_rev_hi_lim
-    description: "Total revolving high credit/credit limit"
-    type: int
-    sql: ${TABLE}."totalRevHiLim"
-
+    
 ###########################################################    
 ### MEASURES/AGGREGATES
 ###########################################################
@@ -526,16 +204,7 @@
 ### APPLICANT
 ###########################################################  
 
-  - measure: applicant.average_income
-    type: average
-    value_format: '$#,##0.00'
-    sql: ${applicant.annual_income}
-    
-  - measure: applicant.average_expected_default_rate
-    type: average
-    decimals: 2
-    value_format: '0.0\%' 
-    sql: ${applicant.expected_default_rate}
+
     
     
 
@@ -543,8 +212,8 @@
   sets:
     default:
       - id
-      - applicant.id
-      - applicant.emp_length
+      - id
+      - emp_length
       - funded_amount
       - grade
       - term

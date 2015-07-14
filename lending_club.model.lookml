@@ -31,9 +31,10 @@
   persist_for: 4 hours
   joins:
     - join: distributions
-      sql_on: ${applicant.id} = ${distributions.uid}
+      sql_on: ${applicant_id} = ${distributions.uid}
       relationship: many_to_one
       
 - explore: suggest_listings
   from: listings
+  hidden: true
   persist_for: 720 hours
