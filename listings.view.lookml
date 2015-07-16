@@ -31,9 +31,9 @@
       + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
       + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
 
-#   - dimension: is_rent
-#     type: number
-#     sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
+  - dimension: is_rent
+    type: number
+    sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
 
   - dimension: applicant_id
     primary_key: true
