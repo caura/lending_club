@@ -125,6 +125,7 @@
     type: tier
     tiers: [5000,10000,15000,20000,35000]
     sql: ${loan_amount}   
+    style: integer
 
   - dimension: looker_is_pull_all
     hidden: true
@@ -166,7 +167,7 @@
   - measure: total_funded_amount
     type: sum
     value_format: '$#,##0.00'
-    sql: ${}
+    sql: ${funded_amount}
     drill_fields: default*
     
   - measure: total_loan_amount
