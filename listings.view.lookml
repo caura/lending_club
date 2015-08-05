@@ -10,13 +10,6 @@
 ### LISTINGS
 ###########################################################  
 
-
-  - measure: expected_weighted_annual_profitability
-    type: number
-    value_format: '0.0\%' 
-    sql: SUM(${expected_profitability} * ${loan_amount}) / ${total_loan_amount}
-    drill_fields: [id,interest_rate,listed_date,is_bad,expected_profitability]
-
   - dimension: expected_profitability
     type: number
     value_format: '0.0\%' 
@@ -30,7 +23,7 @@
       EXP(20.4681692 + -0.0358713*${fico_range_high} + 0.0008713*${fico_range_low} 
       + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
       + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
-
+    ## using numbers produced with Vertica Distributed R ##
   - dimension: is_rent
     type: number
     sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
@@ -52,7 +45,6 @@
   - dimension: accepted_hod
     type: int
     sql: ${accepted_hour_of_day}
-#     order_by_field: accepted_hour_of_day_int
     
   - dimension_group: as_of
     type: time
@@ -106,11 +98,6 @@
     type: number
     value_format: '0.00\%'
     sql: ${TABLE}."intRate"
-    
-#does this field exist?
-#   - dimension: number_of_investors
-#     type: number
-#     sql: ${TABLE}."investorCount"
 
   - dimension_group: listed
     type: time
@@ -160,6 +147,13 @@
 ### LISTINGS
 ###########################################################  
 
+  
+  - measure: expected_weighted_annual_profitability
+    type: number
+    value_format: '0.0\%' 
+    sql: SUM(${expected_profitability} * ${loan_amount}) / ${total_loan_amount}
+    drill_fields: [id,interest_rate,listed_date,is_bad,expected_profitability]
+  
   - measure: count
     type: count
     drill_fields: default*
@@ -176,22 +170,6 @@
     sql: ${loan_amount}
     drill_fields: default*
     
-#   - measure: _total_funded_amount    
-#     hidden: true
-#     type: number
-#     value_format: '$#,##0.00'
-#     sql: ${total_funded_amount}
-#     html: |
-#       <font size="7">{{ rendered_value }}</font>    
-#     
-#   - measure: _total_loan_amount    
-#     hidden: true
-#     type: number
-#     value_format: '$#,##0.00'
-#     sql: ${total_loan_amount}
-#     html: |
-#       <font size="7">{{ rendered_value }}</font>     
-    
   - measure: average_interest_rate
     type: average
     value_format: '0.00\%'
@@ -207,9 +185,22 @@
     sql: ${term}/10
     drill_fields: default*
 
+#   - measure: _total_funded_amount    
+#     hidden: true
+#     type: number
+#     value_format: '$#,##0.00'
+#     sql: ${total_funded_amount}
+#     html: |
+#       <font size="7">{{ rendered_value }}</font>    
+#     
+#   - measure: _total_loan_amount    
+#     hidden: true
+#     type: number
+#     value_format: '$#,##0.00'
+#     sql: ${total_loan_amount}
+#     html: |
+#       <font size="7">{{ rendered_value }}</font>  
     
-    
-
   # ----- Detail ------
   sets:
     default:

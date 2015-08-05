@@ -20,10 +20,6 @@
     sql: ${TABLE}."accOpenPast24Mths"
     view_label: Applicant
 
-#DEPRECATED
-#   - dimension: address_city
-#     sql: ${TABLE}."addrCity"
-
   - dimension: address_state
     sql: ${TABLE}."addrState"
     view_label: Applicant
@@ -39,14 +35,8 @@
     sql: ${annual_income}
     view_label: Applicant
     
-#   - dimension: decile_income_bucket
-#     type: tier
-#     tiers: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-#     sql: ${distributions.income_accum_metric_pct}
-#     required_joins: [distributions]
-
   - dimension: annual_income
-    hidden: true
+#     hidden: true
     type: number
     sql: ${TABLE}."annualInc"
     view_label: Applicant
@@ -511,6 +501,16 @@
     type: count
     drill_fields: default*
     view_label: Applicant
+  
+# DEPRECATED
+#   - dimension: address_city
+#     sql: ${TABLE}."addrCity"
+#   - dimension: decile_income_bucket
+#     type: tier
+#     tiers: [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+#     sql: ${distributions.income_accum_metric_pct}
+#     required_joins: [distributions]
+
     
     
 # ----- Detail ------
