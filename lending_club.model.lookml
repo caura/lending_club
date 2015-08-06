@@ -15,17 +15,8 @@
   persist_for: 4 hours
   conditionally_filter:
     issue_date: after 2014
-    unless:
-    - borrower_id
-    - id
-    - accepted_date
-    - last_payment_date
-    - next_payment_date
-    - last_credit_pull_date
-    - expired_date
-    - listed_date
-    - issue_quarter
-    - fiscal_yyyyq
+    unless: [borrower_id, id, accepted_date, last_payment_date, next_payment_date, last_credit_pull_date, expired_date, listed_date, issue_quarter, fiscal_yyyyq]
+
     
 - explore: listings
   persist_for: 4 hours
