@@ -40,8 +40,8 @@
   - name: purpose
     title: "Loan Purpose"
     type: field_filter
-    explore: suggest_listings
-    field: suggest_listings.purpose
+    explore: listings
+    field: listings.purpose
     
   - name: is_income_verified
     title: "Inc Verification"

@@ -36,8 +36,4 @@
       
 - explore: borrower
   hidden: true
-      
-- explore: suggest_listings
-  from: listings
-  hidden: true
-  persist_for: 720 hours
+
