@@ -20,11 +20,6 @@
     timeframes: [hour_of_day, time, date, week, month, day_of_week]
     sql: ${TABLE}."acceptD"
   
-  - dimension: expected_profitability
-    type: number
-    value_format: '0.0\%' 
-    sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
-
   - dimension: is_bad
     label: 'Prob(Default)'
     type: number
@@ -34,6 +29,11 @@
       + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
       + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
     ## using numbers produced with Vertica Distributed R ##
+    
+  - dimension: expected_profitability
+    type: number
+    value_format: '0.0\%' 
+    sql: 100 * (${interest_rate}/100 - ${is_bad}*(1 - ${is_bad}))
   
   - dimension: is_rent
     type: number
