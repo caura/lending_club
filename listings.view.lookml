@@ -10,6 +10,16 @@
 ### LISTINGS
 ###########################################################  
 
+  - dimension: applicant_id
+    primary_key: true
+    type: int
+    sql: ${TABLE}."id"
+  
+  - dimension_group: accepted
+    type: time
+    timeframes: [hour_of_day, time, date, week, month, day_of_week]
+    sql: ${TABLE}."acceptD"
+  
   - dimension: expected_profitability
     type: number
     value_format: '0.0\%' 
@@ -24,19 +34,10 @@
       + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
       + -0.2145666*${inquiries_last_6mths} + -0.1935067*${is_rent})
     ## using numbers produced with Vertica Distributed R ##
+  
   - dimension: is_rent
     type: number
     sql: CASE WHEN (${home_ownership} = 'RENT') THEN 1 ELSE 0 END
-
-  - dimension: applicant_id
-    primary_key: true
-    type: int
-    sql: ${TABLE}."id"
-
-  - dimension_group: accepted
-    type: time
-    timeframes: [hour_of_day, time, date, week, month, day_of_week]
-    sql: ${TABLE}."acceptD"
   
   - dimension:  accepted_hour_of_day_int
     hidden: true
