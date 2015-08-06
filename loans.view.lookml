@@ -2,7 +2,7 @@
 # https://docs.google.com/a/looker.com/spreadsheets/d/1QfoI8zjZSlh7A735zz6dxiQ7Gu4E5SuY1i6K66vDwXI/edit?usp=sharing
 
 - view: loans
-  sql_table_name: lendig_club.loan_stats
+  sql_table_name: lending_club.loan_stats
   extends: [borrower]
   fields:
 
