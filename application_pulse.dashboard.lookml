@@ -260,23 +260,17 @@
 
   - name: add_a_unique_name_886
     title: "Home Ownership"
-    type: looker_line
+    type: looker_column
     model: lending_club
     explore: listings
     dimensions: [listings.home_ownership]
-    measures: [listings.count, listings.average_annual_income]
-    sorts: [distributions.income_decile_bucket asc]
+    measures: [listings.average_annual_income, listings.count]
+    filters:
+      distributions.annual_income: '>10000'
+      distributions.date: 14 days
+    sorts: [distributions.income_decile_bucket, listings.count desc]
     limit: 500
-    listen:
-      annual_income: distributions.annual_income
-      address_state: distributions.address_state
-#       emp_length: distributions.emp_length
-      is_income_verified: distributions.is_income_verified      
-      date: distributions.date
-      loan_amount: distributions.loan_amount
-      grade: distributions.grade
-      purpose: distributions.purpose
-      interest_rate: distributions.interest_rate
+    column_limit: ''
     show_null_points: true
     show_null_labels: false
     x_axis_scale: ordinal
@@ -284,8 +278,23 @@
     stacking: ''
     point_style: none
     interpolation: linear
-    height: 3
-    colors: ["#651F81", "#80237D", "#C488DD", "#Ef7F0F", "#FEAC47", "#8ED1ED"]
+    colors: ['#651F81', '#Ef7F0F', '#FEAC47', '#8ED1ED']
+    show_value_labels: false
+    label_density: 25
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    series_types:
+      listings.count: column
+      listings.average_annual_income: line
+    show_dropoff: false
+
     
   - name: add_a_unique_name_562
     title: "Grade"
