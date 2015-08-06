@@ -12,7 +12,7 @@
           , a."annualInc" as metric
           , a."annualInc" / sum(a."annualInc") over () as metric_pct
         FROM 
-          listings as a
+          lending_club.listings as a
         WHERE
           {% condition address_state %} a."addrState" {% endcondition %}
           AND

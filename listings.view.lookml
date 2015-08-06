@@ -3,7 +3,7 @@
 # https://www.lendingclub.com/developers/listed-loans.action
 #########################
 - view: listings
-  sql_table_name: listings
+  sql_table_name: lending_club.listings
   extends: [applicant]
   fields:
 ###########################################################    
