@@ -294,6 +294,7 @@
       listings.count: column
       listings.average_annual_income: line
     show_dropoff: false
+    height: 3
 
     
   - name: add_a_unique_name_562
