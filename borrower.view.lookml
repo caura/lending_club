@@ -1,5 +1,5 @@
 - view: borrower
-  sql_table_name: lending_club.loan_stats
+#   sql_table_name: lending_club.loan_stats
 ###########################################################    
 ### BORROWER
 ###########################################################     
