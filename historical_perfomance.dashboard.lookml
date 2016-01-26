@@ -8,7 +8,7 @@
   - name: date
     title: "Date for New loans"
     type: date_filter
-    default_value: last year
+    default_value: before 2016/01/01
     
   - name: address_state
     title: "State"

@@ -8,7 +8,7 @@
   - name: date
     title: "Date for New Listings"
     type: date_filter
-    default_value: 14 days
+    default_value: before 2016/01/01
     
   - name: address_state
     title: "State"
@@ -143,7 +143,7 @@
     font_size: small
 
   - name: add_a_unique_name_793
-    title: "Loan Applications by Accepted Hour (last 3 days)"
+    title: "Loan Applications by Accepted Hour (last 5 months)"
     type: looker_column
     model: lending_club
     explore: listings
@@ -160,7 +160,7 @@
       is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate      
     filters:
-      listings.listed_date: 3 days
+      listings.listed_date: 5 months
     sorts: [listings.listed_date asc]
     limit: 500
     show_null_labels: false
@@ -267,7 +267,7 @@
     measures: [listings.average_annual_income, listings.count]
     filters:
       distributions.annual_income: '>10000'
-      distributions.date: 14 days
+      distributions.date: 5 months
     sorts: [distributions.income_decile_bucket, listings.count desc]
     limit: 500
     column_limit: ''
