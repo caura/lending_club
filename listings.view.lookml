@@ -12,7 +12,7 @@
 
   - dimension: applicant_id
     primary_key: true
-    type: int
+    type: number
     sql: ${TABLE}."id"
   
   - dimension_group: accepted
@@ -44,7 +44,7 @@
     sql: ${accepted_hour_of_day}::int
     
   - dimension: accepted_hod
-    type: int
+    type: number
     sql: ${accepted_hour_of_day}
     
   - dimension_group: as_of

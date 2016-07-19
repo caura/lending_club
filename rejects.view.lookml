@@ -27,11 +27,11 @@
     sql: ${TABLE}."Loan Title"
 
   - dimension: policy_code
-    type: int
+    type: number
     sql: ${TABLE}."Policy Code"
 
   - dimension: risk_score
-    type: int
+    type: number
     description: "For applications prior to November 5, 2013 the risk score is the borrower's FICO score. For applications after November 5, 2013 the risk score is the borrower's Vantage score"
     sql: ${TABLE}."Risk_Score"
 
@@ -49,4 +49,3 @@
   
   
   
-

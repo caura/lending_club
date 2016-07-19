@@ -15,7 +15,7 @@
 
   - dimension: id
     primary_key: true
-    type: int
+    type: number
     sql: ${TABLE}.id
 
 
@@ -31,7 +31,7 @@
 
   - dimension: funded_amount
     description: "The total amount committed to that loan at that point in time"
-    type: int
+    type: number
     sql: ${TABLE}.funded_amnt
     value_format: '$#,##0.00'
 
@@ -70,7 +70,7 @@
 
   - dimension: issue_quarter
     hidden: true
-    type: int
+    type: number
     sql: CEIL(${issue_month_num} / 3.0)
 
   - dimension: fiscal_yyyyq
@@ -98,7 +98,7 @@
   - dimension: loan_amount
     hidden: true
     description: "The listed amount of the loan applied for by the borrower. If at some point in time, the credit department reduces the loan amount, then it will be reflected in this value"
-    type: int
+    type: number
     sql: ${TABLE}.loan_amnt
     value_format: '$#,##0.00'
 
@@ -158,7 +158,7 @@
 
   - dimension: policy_code
     hidden: true
-    type: int
+    type: number
     sql: ${TABLE}.policy_code
 
   - dimension: purpose
@@ -261,7 +261,6 @@
     drill_fields: default*
     
   - measure: percent_of_total
-    decimals: 2
     type: percent_of_total
     sql: ${count}
     

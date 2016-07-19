@@ -1,4 +1,4 @@
-- connection: verticalooker
+- connection: lendingclub
 
 - scoping: true                  # for backward compatibility
 - include: "*.view.lookml"       # include all the views

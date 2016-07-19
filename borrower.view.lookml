@@ -6,7 +6,7 @@
 
   fields:
   - dimension: borrower_id
-    type: int
+    type: number
     sql: ${TABLE}.member_id
     view_label: Borrower
         
@@ -59,7 +59,7 @@
     
   - dimension: accounts_delinquent
     description: "The number of accounts on which the borrower is now delinquent"
-    type: int
+    type: number
     sql: ${TABLE}.acc_now_delinq
     view_label: Borrower
 
@@ -126,7 +126,7 @@
   - dimension: chargeoff_within_12_mths
     hidden: true
     description: "Number of charge-offs within 12 months"
-    type: int
+    type: number
     sql: ${TABLE}.chargeoff_within_12_mths
     view_label: Borrower
 
@@ -139,26 +139,26 @@
   - dimension: collections_12_months_excluding_medical
     hidden: true
     description: "Number of collections in 12 months excluding medical collections"
-    type: int
+    type: number
     sql: ${TABLE}.collections_12_mths_ex_med
     view_label: Borrower
 
   - dimension: delinquennt_2yrs
     hidden: true
     description: "The number of 30+ days past-due incidences of delinquency in the borrower's credit file for the past 2 years"
-    type: int
+    type: number
     sql: ${TABLE}.delinq_2yrs
     view_label: Borrower
 
   - dimension: delinquent_amount
     description: "The past-due amount owed for the accounts on which the borrower is now delinquent"
-    type: int
+    type: number
     sql: ${TABLE}.delinq_amnt
     view_label: Borrower
 
   - dimension: revolving_balance
     description: "Total credit revolving balance"
-    type: int
+    type: number
     sql: ${TABLE}.revol_bal
     view_label: Borrower
     
@@ -183,7 +183,7 @@
     
   - dimension: inquiries_last_6mths
     hidden: true
-    type: int
+    type: number
     description: "The number of inquiries by creditors during the past 6 months"
     sql: ${TABLE}.inq_last_6mths
     view_label: Borrower
@@ -279,13 +279,13 @@
   - dimension: collection_amounts
     hidden: true
     description: "Total collection amounts ever owed"
-    type: int
+    type: number
     sql: ${TABLE}.tot_coll_amt
     view_label: Borrower
 
   - dimension: current_balance
     hidden: true
-    type: int
+    type: number
     description: "Total current balance of all accounts"
     sql: ${TABLE}.tot_cur_bal
     view_label: Borrower
@@ -297,7 +297,7 @@
 
   - dimension: accounts
     description: "The total number of credit lines currently in the borrower's credit file"
-    type: int
+    type: number
     sql: ${TABLE}.total_acc
     view_label: Borrower
 
@@ -410,7 +410,7 @@
 
   - dimension: open_accounts
     description: "The number of open credit lines in the borrower's credit file"
-    type: int
+    type: number
     sql: ${TABLE}.open_acc    
     view_label: Borrower
 
@@ -423,20 +423,20 @@
   - dimension: pub_rec
     hidden: true
     description: "Number of derogatory public records"
-    type: int
+    type: number
     sql: ${TABLE}.pub_rec
     view_label: Borrower
 
   - dimension: public_record_bankruptcies
     hidden: true
     description: "Number of public record bankruptcies"
-    type: int
+    type: number
     sql: ${TABLE}.pub_rec_bankruptcies    
     view_label: Borrower
 
 #   - dimension: tax_liens
 #     description: "Number of tax liens"
-#     type: int
+#     type: number
 #     sql: ${TABLE}.tax_liens
 #     view_label: Loans
     

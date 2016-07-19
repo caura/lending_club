@@ -161,7 +161,7 @@
     view_label: Applicant
 
   - dimension: id
-    type: int
+    type: number
     sql: ${TABLE}."memberId"
     view_label: Applicant
 
@@ -408,7 +408,7 @@
 
   - dimension: tot_hi_cred_lim
     hidden: true
-    type: int
+    type: number
     sql: ${TABLE}."totHiCredLim"
     view_label: Applicant
 
@@ -426,7 +426,7 @@
 
   - dimension: total_bc_limit
     hidden: true
-    type: int
+    type: number
     sql: ${TABLE}."totalBcLimit"::int
     view_label: Applicant
 
@@ -438,7 +438,7 @@
   - dimension: total_rev_hi_lim
     hidden: true
     description: "Total revolving high credit/credit limit"
-    type: int
+    type: number
     sql: ${TABLE}."totalRevHiLim"
     view_label: Applicant
     
