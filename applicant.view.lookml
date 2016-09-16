@@ -492,7 +492,6 @@
     
   - measure: average_expected_default_rate
     type: average
-    decimals: 2
     value_format: '0.0\%' 
     sql: ${expected_default_rate}
     view_label: Applicant

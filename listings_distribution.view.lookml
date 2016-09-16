@@ -87,7 +87,7 @@
   - dimension: accum_metric_pct
     hidden: true
     type: number
-    decimals: 3
+    value_format_name: decimal_3
     sql: ${TABLE}.accum_metric_pct
 
   - dimension: income_decile_bucket

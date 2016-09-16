@@ -23,7 +23,7 @@
   - dimension: is_bad
     label: 'Prob(Default)'
     type: number
-    decimals: 2
+    value_format_name: decimal_2
     sql: |
       EXP(20.4681692 + -0.0358713*${fico_range_high} + 0.0008713*${fico_range_low} 
       + 0.0187961*${pub_rec_bankruptcies} + -0.0059923*${revolving_utilization} 
@@ -164,6 +164,19 @@
     value_format: '$#,##0.00'
     sql: ${funded_amount}
     drill_fields: default*
+
+  - measure: total_loan_amount_grade_a
+    type: sum
+    hidden: true
+    filters:
+      grade: 'A'
+    value_format: '$#,##0.00'
+    sql: ${loan_amount}
+    drill_fields: default*
+    
+  - measure: share_a_total_percent
+    type: number
+    sql: 100.0 * ${total_loan_amount_grade_a} / NULLIF(${total_loan_amount},0)
     
   - measure: total_loan_amount
     type: sum
@@ -182,7 +195,7 @@
     label: "Debt to Income"
     description: "number of months"
     type: average
-    decimals: 1
+    value_format_name: decimal_1
     sql: ${term}/10
     drill_fields: default*
 
