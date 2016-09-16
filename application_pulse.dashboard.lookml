@@ -143,7 +143,7 @@
     font_size: small
 
   - name: add_a_unique_name_793
-    title: "Loan Applications by Accepted Hour (last 5 months)"
+    title: "Loan Applications by Accepted Hour (last 12 months)"
     type: looker_column
     model: lending_club
     explore: listings
@@ -160,7 +160,7 @@
       is_income_verified: listings.is_income_verified
       interest_rate: listings.interest_rate      
     filters:
-      listings.listed_date: 5 months
+      listings.listed_date: 12 months
     sorts: [listings.listed_date asc]
     limit: 500
     show_null_labels: false
